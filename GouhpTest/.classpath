@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="aip-java-sdk-4.16.17/aip-java-sdk-4.16.17.jar"/>
+	<classpathentry kind="lib" path="aip-java-sdk-4.16.17/json-20160810.jar"/>
+	<classpathentry kind="lib" path="aip-java-sdk-4.16.17/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="aip-java-sdk-4.16.17/slf4j-simple-1.7.25.jar"/>
+	<classpathentry kind="lib" path="bridj-0.7.0.jar"/>
+	<classpathentry kind="lib" path="webcam-capture-0.3.10.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
