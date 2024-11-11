@@ -1,59 +1,72 @@
 package webcam;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import com.github.sarxos.webcam.*;
 import com.github.sarxos.webcam.util.ImageUtils;
+
 import car.LicenceP;
 
-public class Picture implements ActionListener {
+import java.awt.image.BufferedImage;
+
+public class Picture {
     JFrame window;
-    JButton button;
     Webcam webcam;
-    private String lastFileName;  // 保存最后拍摄图片的路径
-    private Timer autoCaptureTimer;  // 定时器用于自动拍照
+    private Timer captureTimer;  // 定时器用于自动捕获图像
+    private boolean recognized = false;  // 标记是否已识别到车牌
 
     public Picture() {
+        // 设置窗口和摄像头面板
         window = new JFrame("摄像头");
         webcam = Webcam.getDefault();
         WebcamPanel panel = new WebcamPanel(webcam);
-        window.add(panel);
+        window.add(panel, BorderLayout.CENTER);
+
+        // 左侧显示车牌识别结果的图片
+        JLabel imgLabel = new JLabel();
+        imgLabel.setHorizontalAlignment(JLabel.CENTER);
+        window.add(imgLabel, BorderLayout.WEST);
+
+        // 显示车牌识别状态
+        JLabel resultLabel = new JLabel("等待车牌识别...");
+        resultLabel.setFont(new Font("宋体", Font.BOLD, 16));
+        window.add(resultLabel, BorderLayout.SOUTH);
+
         window.setResizable(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        button = new JButton("拍照");
-        button.addActionListener(this);
-        window.add(panel, BorderLayout.CENTER);
-        window.add(button, BorderLayout.SOUTH);
-
-        window.setResizable(true);
         window.pack();
         window.setVisible(true);
 
-        // 定义定时器，每10秒自动拍照一次
-        int delay = 10000; // 10000 毫秒，即 10 秒
-        autoCaptureTimer = new Timer(delay, e -> takePicture());
-        autoCaptureTimer.start(); // 启动定时器
+        // 定义定时器，每200毫秒检测一次
+        int delay = 200; // 每200毫秒检测一次
+        captureTimer = new Timer(delay, e -> captureAndRecognize(imgLabel, resultLabel));
+        captureTimer.start();  // 启动定时器
     }
 
-    // 手动拍照按钮触发的事件
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == button) {
-            takePicture();
+    // 定时器触发的事件，捕捉图像并进行车牌识别
+    private void captureAndRecognize(JLabel imgLabel, JLabel resultLabel) {
+        if (webcam != null && webcam.isOpen() && !recognized) {  // 检查摄像头是否打开且未识别到车牌
+            BufferedImage image = webcam.getImage();
+            if (image != null) {
+                imgLabel.setIcon(new ImageIcon(image));  // 显示当前捕获的图像
+                imgLabel.revalidate();
+                imgLabel.repaint();
+
+                // 保存图像文件，用于车牌识别
+                String fileName = "car_picture/" + System.currentTimeMillis();
+                WebcamUtils.capture(webcam, fileName, ImageUtils.FORMAT_PNG);
+                String lastFileName = fileName + ".png";
+                System.out.println("捕获的图像路径: " + lastFileName);
+
+                // 标记已识别车牌，停止定时器，防止重复捕获
+                recognized = true;
+                captureTimer.stop();
+
+                // 更新状态信息并调用 LicenceP 执行识别
+                resultLabel.setText("检测到车牌，开始识别...");
+                new LicenceP("智慧停车管理", lastFileName);  // 调用 LicenceP 类，自动打开识别窗口
+            }
         }
-    }
-
-    // 拍照并调用 LicenceP 进行识别
-    private void takePicture() {
-        String fileName = "car_picture/" + System.currentTimeMillis(); // 保存路径
-        WebcamUtils.capture(webcam, fileName, ImageUtils.FORMAT_PNG);
-        lastFileName = fileName + ".png";
-        System.out.println("捕获的图像路径: " + lastFileName);
-        JOptionPane.showMessageDialog(null, "拍照成功，路径为: " + lastFileName);
-
-        // 调用 LicenceP 进行识别
-        new LicenceP("车牌识别", lastFileName);
     }
 
     public static void main(String[] args) {

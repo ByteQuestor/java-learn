@@ -4,17 +4,15 @@ import javax.swing.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
-public class LicenceP implements ActionListener {
+public class LicenceP {
     JFrame f;
     JLabel title, img;
     JTextArea result;
     String path;
 
-    public LicenceP(String name, String imagePath) {  // 新增 imagePath 参数
+    public LicenceP(String name, String imagePath) {
         f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setTitle(name);
@@ -35,12 +33,6 @@ public class LicenceP implements ActionListener {
         result.setBounds(500, 100, 350, 350);
         f.add(result);
 
-        JButton recong = new JButton("车牌识别");
-        recong.setFont(new Font("宋体", Font.BOLD, 16));
-        recong.setBounds(500, 460, 150, 40);
-        recong.addActionListener(this);
-        f.add(recong);
-
         f.setVisible(true);
 
         // 加载拍照后的图像
@@ -50,10 +42,13 @@ public class LicenceP implements ActionListener {
             imageIcon.setImage(imageIcon.getImage().getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_DEFAULT));
             img.setIcon(imageIcon);
         }
+
+        // 启动窗口后立即进行车牌识别
+        recognizePlate();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    // 识别车牌并更新结果显示
+    private void recognizePlate() {
         try {
             String res = BaseModel.licensePlate(path);  // 传入图片路径
             JSONObject json_res = new JSONObject(res);
