@@ -1,0 +1,14 @@
+package view;
+
+import lcs.LcsBox;
+
+public class LoginFrame {
+    public static void main(String[] args) {
+        // 创建 LcsBox 实例并设置窗口
+        LcsBox win = new LcsBox();
+        win.setSize(310, 260);
+        win.setLocation(100, 100);  // 设置窗口位置
+        win.setTitle("登录框");
+        win.setVisible(true);  // 显示窗口
+    }
+}

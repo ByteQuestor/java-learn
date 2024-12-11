@@ -1,0 +1,15 @@
+package view;
+
+import javax.swing.*;
+
+import lcs.LcsBox;
+
+public class LoginFrame extends JFrame {
+    public static void main(String[] args) {
+        //new LoginFrame();
+    	LcsBox win = new LcsBox();
+    	win.setBounds(100,100,310,260);
+    	win.setTitle("登录框");
+    }
+}
+

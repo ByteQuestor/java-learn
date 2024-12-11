@@ -1,0 +1,11 @@
+package lcs;
+
+import javax.swing.Box;
+
+public class LcsBox {
+	Box boxH;
+	Box boxVOne,boxVTwo;
+	public LcsBox() {
+		
+	}
+}

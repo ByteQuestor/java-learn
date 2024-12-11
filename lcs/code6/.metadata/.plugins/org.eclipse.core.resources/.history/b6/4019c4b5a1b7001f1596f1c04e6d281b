@@ -1,0 +1,45 @@
+package lcs;
+
+import javax.swing.Box;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class LcsBox extends JFrame {
+    Box boxH;
+    Box boxVOne, boxVTwo;
+
+    public LcsBox() {
+        // 使用 null 布局
+        setLayout(null);  
+        init();
+        
+        // 设置窗口的大小和位置
+        setSize(310, 260); 
+        setLocation(100, 100);  // 设置窗口位置
+        setVisible(true); // 确保窗口可见
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 关闭窗口时退出程序
+    }
+
+    void init() {
+        boxH = Box.createHorizontalBox();
+        boxVOne = Box.createVerticalBox();
+        boxVTwo = Box.createVerticalBox();
+
+        // 设置标签和文本框
+        boxVOne.add(new JLabel("姓名:"));
+        boxVTwo.add(new JLabel("职业:"));
+
+        boxVOne.add(new JTextField(10));
+        boxVTwo.add(new JTextField(10));
+
+        // 将 boxVOne 和 boxVTwo 添加到 boxH 中
+        boxH.add(boxVOne);
+        boxH.add(Box.createHorizontalStrut(10));  // 设置水平间距
+        boxH.add(boxVTwo);
+
+        // 设置 boxH 的位置和大小
+        boxH.setBounds(10, 10, 280, 200);  // 设置 boxH 的位置和大小
+        add(boxH);
+    }
+}

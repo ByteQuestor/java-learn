@@ -1,0 +1,75 @@
+package view;
+
+import javax.swing.*;
+import util.DBCon;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class LoginFrame extends JFrame {
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton loginButton, registerButton;
+    
+    public LoginFrame() {
+        setTitle("登录窗口");
+        usernameField = new JTextField(20);
+        passwordField = new JPasswordField(20);
+
+        loginButton = new JButton("登录");
+        registerButton = new JButton("注册");
+
+        // 添加组件
+        add(new JLabel("用户名："));
+        add(usernameField);
+        add(new JLabel("密码："));
+        add(passwordField);
+        add(loginButton);
+        add(registerButton);
+
+        // 按钮的事件监听
+        loginButton.addActionListener(e -> loginUser());
+        registerButton.addActionListener(e -> openRegisterFrame());
+
+        // 设置窗口基本属性
+        setSize(400, 500);
+        setVisible(true);
+    }
+
+    private void loginUser() {
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+
+        try (Connection conn = DBCon.getConnection()) {
+            String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
+            try (PreparedStatement pst = conn.prepareStatement(sql)) {
+                pst.setString(1, username);
+                pst.setString(2, password);
+                ResultSet rs = pst.executeQuery();
+                
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(this, "用户名和密码正确！");
+                } else {
+                    JOptionPane.showMessageDialog(this, "用户名或密码错误！");
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "登录失败！");
+        }
+    }
+
+    private void openRegisterFrame() {
+        // 创建并显示注册窗口
+        new RegisterFrame();
+    }
+
+    public static void main(String[] args) {
+        //new LoginFrame();
+    }
+
+    private void openChatSelector() {
+        // 创建并显示选择器窗口
+        new ChatSelector();
+    }
+}

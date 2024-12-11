@@ -1,0 +1,9 @@
+package lcs;
+import javax.swing.JFrame;
+public class Main {
+	public static void main(String[] args) {
+    	LcsBox win = new LcsBox();
+    	win.setBounds(100,100,310,260);
+    	win.setTitle("登录框");
+    }
+}

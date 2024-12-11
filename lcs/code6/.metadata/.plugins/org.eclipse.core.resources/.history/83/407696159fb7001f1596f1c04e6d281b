@@ -1,0 +1,19 @@
+package lcs;
+
+import javax.swing.Box;
+import javax.swing.JFrame;
+
+public class LcsBox extends JFrame{
+	Box boxH;
+	Box boxVOne,boxVTwo;
+	public LcsBox() {
+		setLayout(new java.awt.FlowLayout());
+		
+	}
+	void init() {
+		boxH = Box.createHorizontalBox();
+		boxVOne = Box.createVerticalBox();
+		boxVTwo = Box.createVerticalBox();
+		boxVOne.add(new JTextField(10));
+	}
+}
