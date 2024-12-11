@@ -1,0 +1,13 @@
+import java.net.*;
+
+public class UDPClient {
+    public static void main(String[] args) {
+        try (DatagramSocket socket = new DatagramSocket()) {
+            String message = "Hello from UDP client";
+            DatagramPacket sendPacket = new DatagramPacket(message.getBytes(), message.length(), InetAddress.getByName("localhost"), 9876);
+            socket.send(sendPacket);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

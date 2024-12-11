@@ -1,0 +1,64 @@
+package view;
+import javax.swing.*;
+import util.DBCon;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class RegisterFrame extends JFrame {
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton registerButton, resetButton;
+
+    public RegisterFrame() {
+        setTitle("注册窗口");
+        setLayout(new FlowLayout());
+        
+        usernameField = new JTextField(20);
+        passwordField = new JPasswordField(20);
+        
+        registerButton = new JButton("注册");
+        resetButton = new JButton("重置");
+        
+        add(new JLabel("用户名："));
+        add(usernameField);
+        add(new JLabel("密码："));
+        add(passwordField);
+        add(registerButton);
+        add(resetButton);
+        
+        registerButton.addActionListener(e -> registerUser());
+        resetButton.addActionListener(e -> resetFields());
+        
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+    
+    private void registerUser() {
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        
+        try (Connection conn = DBCon.getConnection()) {
+            String sql = "INSERT INTO user (username, password) VALUES (?, ?)";
+            try (PreparedStatement pst = conn.prepareStatement(sql)) {
+                pst.setString(1, username);
+                pst.setString(2, password);
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(this, "注册成功！");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "注册失败！");
+        }
+    }
+
+    private void resetFields() {
+        usernameField.setText("");
+        passwordField.setText("");
+    }
+
+    public static void main(String[] args) {
+        new RegisterFrame();
+    }
+}

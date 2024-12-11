@@ -1,0 +1,53 @@
+import java.net.*;
+import java.io.*;
+
+public class UDPChatClient {
+    private DatagramSocket socket;
+    private InetAddress serverAddress;
+    private int serverPort;
+
+    public UDPChatClient(String serverAddress, int serverPort) {
+        try {
+            this.socket = new DatagramSocket();
+            this.serverAddress = InetAddress.getByName(serverAddress);
+            this.serverPort = serverPort;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 发送消息
+    private void sendMessage(String message) {
+        try {
+            byte[] sendData = message.getBytes();
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverAddress, serverPort);
+            socket.send(sendPacket);  // 发送消息
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 接收服务器消息
+    public void receiveMessage() {
+        try {
+            while (true) {
+                byte[] receiveData = new byte[1024];
+                DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+                socket.receive(receivePacket);  // 接收数据报
+                String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
+
+                System.out.println("服务器: " + message);  // 显示服务器的消息
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        UDPChatClient client = new UDPChatClient("localhost", 9876);
+        client.receiveMessage();  // 启动接收消息的线程
+
+        // 发送测试消息
+        client.sendMessage("Hello, Server!");
+    }
+}

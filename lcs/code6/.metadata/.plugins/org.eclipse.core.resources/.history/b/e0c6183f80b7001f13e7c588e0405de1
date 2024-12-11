@@ -1,0 +1,169 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+
+public class JFrameJDBC extends JFrame implements ActionListener{
+
+	JPanel pnlMain;
+	JLabel lblName,lblPass;
+	JTextField txtName,txtPass;
+	JButton btnInsert,btnUpdate,btnDelete,btnNext;
+	Connection conn;
+	ResultSet rs1;
+	public JFrameJDBC(){
+		super("用户数据的增删改查");
+		pnlMain=new JPanel();
+		lblName=new JLabel("用户名");
+		lblPass=new JLabel("密    码");
+		txtName=new JTextField(16);
+		txtPass=new JTextField(16);
+		btnInsert=new JButton("插入");
+		btnInsert.addActionListener(this);
+		btnUpdate=new JButton("修改");
+		btnUpdate.addActionListener(this);
+		btnDelete=new JButton("删除");
+		btnDelete.addActionListener(this);
+		btnNext=new JButton(">>");
+		btnNext.addActionListener(this);
+		pnlMain.add(lblName);
+		pnlMain.add(txtName);
+		pnlMain.add(lblPass);
+		pnlMain.add(txtPass);
+		pnlMain.add(btnInsert);
+		pnlMain.add(btnUpdate);
+		pnlMain.add(btnDelete);
+		pnlMain.add(btnNext);
+		setContentPane(pnlMain);
+		setSize(280,150);
+		setVisible(true);
+		getUser();
+	}
+	
+	public static void main(String[] args) {
+		JFrameJDBC mu=new JFrameJDBC();
+		//mu.getUser();
+	}
+	//按钮处理
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		if(ae.getSource()==btnInsert)
+			insertUser();
+		if(ae.getSource()==btnUpdate)
+			updateUser();
+		if(ae.getSource()==btnDelete){
+			int intChoice=JOptionPane.showConfirmDialog(null, "确定要删除该记录吗？","确认删除",JOptionPane.YES_NO_OPTION);
+			if(intChoice==JOptionPane.YES_OPTION)
+				deleteUser();			
+		if(ae.getSource()==btnNext){
+			try{
+				rs1.next();
+				txtName.setText(rs1.getString(1));
+				txtPass.setText(rs1.getString(2));
+			}catch(Exception e){
+				JOptionPane.showMessageDialog(null, "没有更多数据了");
+			}
+		}
+		}
+	}
+	
+	
+	
+	//连接数据库成功
+	public Connection openDB(){
+		try{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			String userid="root";
+			String pwd="000000";
+			String url = "jdbc:mysql://localhost:3306/jdbcudp?useUnicode=true&characterEncoding=GBK";
+
+			conn=DriverManager.getConnection(url,userid,pwd);
+			return conn;			
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, "链接数据库失败");
+			return null;
+		}
+	}
+	//成功
+//	public void getUser() {
+//		try{
+//			Statement stmt=openDB().createStatement();
+//			rs1=stmt.executeQuery("select * from user1");
+//			rs1.beforeFirst();
+//		}catch(Exception e){
+//			JOptionPane.showMessageDialog(null, "用户信息获取失败");
+//		}
+//	}
+    public void getUser() {
+        try{
+            Statement stmt=openDB().createStatement();
+            rs1=stmt.executeQuery("select * from user");
+            if (!rs1.next()) {
+                JOptionPane.showMessageDialog(null, "没有用户信息");
+                rs1 = null;
+            } else {
+                rs1.previous();
+                JOptionPane.showMessageDialog(null, "用户信息获取成功");
+            }
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "用户信息获取失败");
+        }
+    }
+	//删除模块成功
+	public void deleteUser() {
+		try{
+			Statement sm=openDB().createStatement();
+			sm.executeUpdate("delete from user1 where user='" + txtName.getText() + "'");
+			JOptionPane.showMessageDialog(null, "用户删除成功");
+			sm.close();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, "用户删除失败");
+		}
+	}
+//	public void updateUser() {
+//		try{
+//			Statement sm=openDB().createStatement();
+//			String strUpdate="update user1 set password='" + txtPass.getText() + "' where name='" + txtName.getText() + "'";
+//			sm.executeUpdate(strUpdate);
+//			JOptionPane.showMessageDialog(null, "用户修改成功");
+//			sm.close();
+//		}catch(Exception e){
+//			JOptionPane.showMessageDialog(null,"用户修改失败！");
+//			}
+//	}
+	//修改模块成功
+	public void updateUser(){
+		try{
+			Statement sm=openDB().createStatement();
+			String strUpdate="update user1 set password='" + txtPass.getText() + "' where user='" + txtName.getText() + "'";
+			sm.executeUpdate(strUpdate);
+			JOptionPane.showMessageDialog(null, "用户名修改成功");
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, "用户名修改失败");
+		}
+	}
+	//插入模块成功
+	private void insertUser() {
+		try{
+			PreparedStatement psm=openDB().prepareStatement("Insert user1(user,password) values(?,?)");
+			psm.setString(1, txtName.getText());
+			psm.setString(2, txtPass.getText());
+			psm.executeUpdate();
+			JOptionPane.showMessageDialog(null, "用户添加成功");
+			psm.close();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, "用户添加失败");
+		}
+	}
+}

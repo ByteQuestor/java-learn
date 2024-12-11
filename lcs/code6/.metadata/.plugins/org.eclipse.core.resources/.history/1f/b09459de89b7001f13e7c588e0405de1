@@ -1,0 +1,30 @@
+package Socket;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class ServerUI {
+    private static JTextArea chatArea;
+
+    public ServerWindow() {
+        // 创建窗口
+        JFrame frame = new JFrame("聊天服务器");
+        chatArea = new JTextArea(20, 40);
+        chatArea.setEditable(false);
+        chatArea.setBackground(Color.BLACK); // 黑色背景
+        chatArea.setForeground(Color.WHITE); // 白色字体
+        JScrollPane scrollPane = new JScrollPane(chatArea);
+        frame.add(scrollPane);
+        frame.setSize(500, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null); // 居中显示
+        frame.setVisible(true);
+    }
+
+    // 更新聊天区域显示
+    public static void updateChatArea(String message) {
+        SwingUtilities.invokeLater(() -> {
+            chatArea.append(message + "\n");
+        });
+    }
+}

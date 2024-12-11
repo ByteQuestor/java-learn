@@ -1,0 +1,90 @@
+package view;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.io.*;
+import java.net.*;
+
+public class ChatClientFrame extends JFrame {
+    private JTextArea chatArea;
+    private JTextField messageField;
+    private JButton sendButton;
+    private Socket socket;
+    private PrintWriter out;
+    private BufferedReader in;
+
+    public ChatClientFrame(String serverAddress, int serverPort) {
+        setTitle("聊天界面");
+
+        // 设置布局
+        setLayout(new BorderLayout());
+
+        chatArea = new JTextArea(20, 40);
+        chatArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(chatArea);
+
+        messageField = new JTextField(30);
+        sendButton = new JButton("发送");
+
+        // 发送按钮点击事件
+        sendButton.addActionListener(e -> sendMessage());
+
+        // 添加组件到界面
+        JPanel panel = new JPanel();
+        panel.add(messageField);
+        panel.add(sendButton);
+
+        add(scrollPane, BorderLayout.CENTER);
+        add(panel, BorderLayout.SOUTH);
+
+        // 设置窗口属性
+        setSize(500, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null); // 居中显示窗口
+        setVisible(true);
+
+        // 连接服务器
+        try {
+            socket = new Socket(serverAddress, serverPort);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            // 启动接收消息的线程
+            new Thread(new IncomingMessageHandler()).start();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "无法连接到服务器！");
+            e.printStackTrace();
+        }
+    }
+
+    // 发送消息
+    private void sendMessage() {
+        String message = messageField.getText();
+        if (!message.isEmpty()) {
+            out.println(message);
+            chatArea.append("我: " + message + "\n");
+            messageField.setText(""); // 清空输入框
+        }
+    }
+
+    // 接收消息的线程
+    private class IncomingMessageHandler implements Runnable {
+        @Override
+        public void run() {
+            try {
+                String message;
+                while ((message = in.readLine()) != null) {
+                    chatArea.append("对方: " + message + "\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        // 创建聊天客户端，连接到本地服务器，端口为 12345
+        new ChatClientFrame("localhost", 12345);
+    }
+}

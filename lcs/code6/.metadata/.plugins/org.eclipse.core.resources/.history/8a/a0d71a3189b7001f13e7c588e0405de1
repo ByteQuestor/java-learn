@@ -1,0 +1,66 @@
+package Socket;
+
+import java.io.*;
+import java.net.*;
+import javax.swing.*;
+
+public class ChatServer {
+    private static final int PORT = 12345;
+    private static JTextArea chatArea;
+
+    public static void main(String[] args) {
+        // 创建简单的窗口
+        JFrame frame = new JFrame("聊天服务器");
+        chatArea = new JTextArea(20, 40);
+        chatArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(chatArea);
+
+        frame.add(scrollPane);
+        frame.setSize(500, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null); // 居中显示
+        frame.setVisible(true);
+
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            System.out.println("服务器已启动...");
+            while (true) {
+                new ClientHandler(serverSocket.accept()).start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static class ClientHandler extends Thread {
+        private Socket socket;
+        private PrintWriter out;
+        private BufferedReader in;
+
+        public ClientHandler(Socket socket) {
+            this.socket = socket;
+        }
+
+        @Override
+        public void run() {
+            try {
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
+
+                String message;
+                while ((message = in.readLine()) != null) {
+                    chatArea.append("收到消息: " + message + "\n");
+                    // 广播消息给客户端
+                    out.println(message);  // 这里只是将收到的消息发送回客户端，简化逻辑
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}

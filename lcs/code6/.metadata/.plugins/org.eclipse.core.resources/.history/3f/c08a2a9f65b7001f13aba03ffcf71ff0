@@ -1,0 +1,71 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class LoginWindow extends JFrame {
+    private JTextField txtUsername;
+    private JPasswordField txtPassword;
+    private JButton btnLogin, btnReset;
+
+    public LoginWindow() {
+        setTitle("登录窗口");
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        JLabel lblUsername = new JLabel("用户名:");
+        txtUsername = new JTextField(20);
+        JLabel lblPassword = new JLabel("密码:");
+        txtPassword = new JPasswordField(20);
+
+        btnLogin = new JButton("登录");
+        btnReset = new JButton("重置");
+
+        add(lblUsername);
+        add(txtUsername);
+        add(lblPassword);
+        add(txtPassword);
+        add(btnLogin);
+        add(btnReset);
+
+        btnLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                loginUser(txtUsername.getText(), new String(txtPassword.getPassword()));
+            }
+        });
+
+        btnReset.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                txtUsername.setText("");
+                txtPassword.setText("");
+            }
+        });
+    }
+
+    public void loginUser(String username, String password) {
+        try {
+            // JDBC操作数据库
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/userDB", "root", "password");
+            String sql = "SELECT * FROM user WHERE username=? AND password=?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "用户名和密码正确");
+            } else {
+                JOptionPane.showMessageDialog(this, "用户名或密码错误");
+            }
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "登录失败!");
+        }
+    }
+
+    public static void main(String[] args) {
+        LoginWindow window = new LoginWindow();
+        window.setVisible(true);
+    }
+}

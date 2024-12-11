@@ -1,0 +1,78 @@
+package view;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.*;
+import java.io.*;
+
+public class UDPChatServer extends JFrame {
+    private JTextArea messageArea;
+    private DatagramSocket socket;
+    private int serverPort;
+
+    public UDPChatServer(int serverPort) {
+        try {
+            this.socket = new DatagramSocket(serverPort);
+            this.serverPort = serverPort;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 创建 UI
+        setTitle("UDP 服务器");
+        setLayout(new BorderLayout());
+
+        // 消息区域
+        messageArea = new JTextArea(15, 30);
+        messageArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(messageArea);
+
+        // 添加组件
+        add(scrollPane, BorderLayout.CENTER);
+
+        // 设置窗口基本属性
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null); // 居中显示
+        setVisible(true);
+    }
+
+    // 接收客户端的消息
+    public void receiveMessage() {
+        new Thread(() -> {
+            try {
+                while (true) {
+                    byte[] receiveData = new byte[1024];
+                    DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+                    socket.receive(receivePacket);  // 接收数据报
+
+                    String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
+                    messageArea.append("客户端: " + message + "\n");  // 显示客户端的消息
+
+                    // 回复客户端
+                    InetAddress clientAddress = receivePacket.getAddress();
+                    int clientPort = receivePacket.getPort();
+                    sendMessage("已收到: " + message, clientAddress, clientPort);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    // 发送消息到客户端
+    private void sendMessage(String message, InetAddress clientAddress, int clientPort) {
+        try {
+            byte[] sendData = message.getBytes();
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, clientAddress, clientPort);
+            socket.send(sendPacket);  // 发送消息
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        UDPChatServer serverUI = new UDPChatServer(9876);
+        serverUI.receiveMessage();  // 启动接收消息的线程
+    }
+}

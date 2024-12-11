@@ -1,0 +1,69 @@
+package udp;
+
+import java.net.*;
+import java.io.*;
+
+public class UDPChatServer {
+    private DatagramSocket socket;
+    private int serverPort;
+
+    public UDPChatServer(int serverPort) {
+        try {
+            this.socket = new DatagramSocket(serverPort);
+            this.serverPort = serverPort;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 接收客户端的消息
+    public String receiveMessage() {
+        try {
+            byte[] receiveData = new byte[1024];
+            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+            socket.receive(receivePacket);  // 接收数据报
+            return new String(receivePacket.getData(), 0, receivePacket.getLength());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // 发送响应给客户端
+    public void sendMessage(String message, InetAddress clientAddress, int clientPort) {
+        try {
+            byte[] sendData = message.getBytes();
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, clientAddress, clientPort);
+            socket.send(sendPacket);  // 发送数据报
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 关闭 socket
+    public void close() {
+        socket.close();
+    }
+
+    public static void main(String[] args) {
+        UDPChatServer server = new UDPChatServer(9876);
+
+        while (true) {
+            String message = server.receiveMessage();
+            if (message != null) {
+                System.out.println("接收到客户端的消息: " + message);
+
+                // 回复客户端
+                InetAddress clientAddress;
+				try {
+					clientAddress = InetAddress.getByName("localhost");
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} // 或从接收到的 DatagramPacket 获取
+                int clientPort = 12345; // 客户端端口号（可以从接收到的 DatagramPacket 中提取）
+                server.sendMessage("收到: " + message, clientAddress, clientPort);
+            }
+        }
+    }
+}
