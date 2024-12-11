@@ -1,0 +1,10 @@
+public static void main(String[] args) {
+    // 确保 UI 在事件分发线程中启动
+    SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+            // 创建并显示学生管理系统主窗口
+            new StudentFrame().setVisible(true);
+        }
+    });
+}

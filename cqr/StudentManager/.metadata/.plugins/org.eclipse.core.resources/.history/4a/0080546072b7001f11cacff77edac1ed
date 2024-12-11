@@ -1,0 +1,26 @@
+package service;
+
+import dao.StudentDAO;
+import entity.Student;
+
+import java.util.List;
+
+public class StudentService {
+    private StudentDAO studentDAO = new StudentDAO();
+
+    public List<Student> getAllStudents() {
+        return studentDAO.getAllStudents();
+    }
+
+    public void addStudent(Student student) {
+        studentDAO.addStudent(student);
+    }
+
+    public void updateStudent(Student student) {
+        studentDAO.updateStudent(student);
+    }
+
+    public void deleteStudent(int studentId) {
+        studentDAO.deleteStudent(studentId);
+    }
+}

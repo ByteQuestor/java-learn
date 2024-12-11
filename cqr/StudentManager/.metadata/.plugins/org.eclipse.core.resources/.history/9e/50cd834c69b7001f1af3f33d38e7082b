@@ -1,0 +1,13 @@
+package cn.estore.cart;
+
+public class CartGoods {
+	public int ID;
+	public float price;
+	public int number;
+	public CartGoods(int iD, float price, int number) {
+		super();
+		ID = iD;
+		this.price = price;
+		this.number = number;
+	}
+}

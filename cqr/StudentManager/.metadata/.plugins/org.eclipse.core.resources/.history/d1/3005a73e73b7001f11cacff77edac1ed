@@ -1,0 +1,10 @@
+package main;
+
+import view.StudentFrame;
+
+public class main {
+    public static void main(String[] args) {
+    	StudentFrame studentView = new StudentFrame();
+        studentView.showMenu();
+    }
+}

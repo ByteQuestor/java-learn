@@ -1,0 +1,36 @@
+package cn.estore.util;
+
+import java.sql.*;
+
+public class DBConnection {
+    private String dbDriver = "com.mysql.cj.jdbc.Driver";
+    private String url = "jdbc:mysql://localhost:3306/estoredb?useSSL=false"
+            + "&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC";
+    private Connection connection = null;
+
+    public DBConnection() {
+        try {
+            // 加载数据库驱动
+            Class.forName(dbDriver).newInstance();
+            // 获取数据库连接
+            connection = DriverManager.getConnection(url, "root", "000000");
+            System.out.println("数据库连接成功！");
+        } catch (Exception e) {
+            // 打印堆栈信息，以便排查错误
+            System.out.println("数据库连接失败");
+            e.printStackTrace();
+        }
+    }
+
+    // 获取数据库连接
+    public Connection getConnection() {
+        return connection;
+    }
+
+    // 主方法用于测试连接
+    public static void main(String[] args) {
+        DBConnection dbConn = new DBConnection();
+        // 这里可以添加一些测试代码，检查连接是否正常工作
+        dbConn.closeConnection();
+    }
+}

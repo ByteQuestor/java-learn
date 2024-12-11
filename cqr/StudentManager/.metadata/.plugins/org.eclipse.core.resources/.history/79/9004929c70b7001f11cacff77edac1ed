@@ -1,0 +1,98 @@
+package cn.estore.dao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import cn.estore.entity.CustomerEntity;
+import cn.estore.util.DBConnection;
+public class CustomerDao {
+	private Connection connection = null;
+	private PreparedStatement ps = null;
+	private DBConnection jdbc = null;
+	public CustomerDao() {
+		jdbc = new DBConnection();
+		connection = jdbc.connection;
+	}
+	public CustomerEntity selectCustomerEntity(String name) {
+		CustomerEntity user = null;
+		try {
+			ps = connection.prepareStatement("select * from tb_customer where user_name=?");
+			ps.setString(1, name);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				user = new CustomerEntity();
+				user.setId(Integer.valueOf(rs.getString(1)));
+				user.setUserName(rs.getString(2));
+				user.setPassword(rs.getString(3));
+				user.setRealName(rs.getString(4));
+				user.setMobile(rs.getString(5));
+				user.setEmail(rs.getString(6));
+				user.setPasswordQuestion(rs.getString(7));
+				user.setPasswordHintAnswer(rs.getString(8));
+			}
+		}catch(SQLException ex) {
+			System.out.println(" ˝æ›ø‚∑√Œ  ß∞‹");
+		}
+		return user;
+	}
+	public boolean insertCustomer(CustomerEntity user) {
+		try {
+			ps = connection.prepareStatement("insert into tb_customer(user_name,"
+					+ "password,real_name,mobile,email,password_question,"
+					+ "password_hint_answer) values(?,?,?,?,?,?,?)");
+			ps.setString(1, user.getUserName());
+			ps.setString(2, user.getPassword());
+			ps.setString(3, user.getRealName());
+			ps.setString(4, user.getMobile());
+			ps.setString(5, user.getEmail());
+			ps.setString(6, user.getPasswordQuestion());
+			ps.setString(7, user.getPasswordHintAnswer());
+		}catch(SQLException ex) {
+			System.out.println(ex.getMessage());
+			return false;
+		}
+		
+		return true;
+	}
+	public boolean hasSameValue(String name,String value) {
+		boolean result = false;
+		try {
+			ps = connection.prepareStatement("select tb_customer where " + name + "=?");
+					ps.setString(1, value);
+					ResultSet rs = ps.executeQuery();
+					if(rs.next()) {
+						result = true;
+					}else {
+						result = false;}
+					}catch(SQLException e) {
+						System.out.println(e.toString());
+					}finally {
+						
+					}
+					return result;
+	}
+	public boolean updateCustomer(CustomerEntity user) {
+		try {
+			ps = connection.prepareStatement("update tb_customer set user_name=?,"
+					+ "password=?,real_name=?,mobile=?,email=?,"
+					+ "password_question=?,password+hint_answer=? where id=?");
+			ps.setString(1, user.getUserName());
+			ps.setString(2, user.getPassword());
+			ps.setString(3, user.getRealName());
+			ps.setString(4, user.getMobile());
+			ps.setString(5, user.getEmail());
+			ps.setString(6, user.getPasswordQuestion());
+			ps.setString(7, user.getPasswordHintAnswer());
+			ps.setString(8, String.valueOf(user.getId()));
+			System.out.print(user.getUserName() + String.valueOf(user.getId()));
+			ps.executeUpdate();
+			ps.close();
+			
+			return true;
+		}catch(SQLException ex) {
+			return false;
+		}
+	}
+}

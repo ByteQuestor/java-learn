@@ -1,0 +1,102 @@
+package view;
+
+import controller.StudentController;
+import entity.Student;
+
+import java.util.List;
+import java.util.Scanner;
+
+public class StudentView {
+    private StudentController studentController = new StudentController();
+    private Scanner scanner = new Scanner(System.in);
+
+    public void showMenu() {
+        while (true) {
+            System.out.println("=== 学生管理系统 ===");
+            System.out.println("1. 查看所有学生");
+            System.out.println("2. 添加学生");
+            System.out.println("3. 更新学生");
+            System.out.println("4. 删除学生");
+            System.out.println("5. 退出");
+            System.out.print("请选择操作: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // 处理换行
+
+            switch (choice) {
+                case 1:
+                    showAllStudents();
+                    break;
+                case 2:
+                    addStudent();
+                    break;
+                case 3:
+                    updateStudent();
+                    break;
+                case 4:
+                    deleteStudent();
+                    break;
+                case 5:
+                    System.out.println("退出系统");
+                    return;
+                default:
+                    System.out.println("无效的选择，请重新输入!");
+            }
+        }
+    }
+
+    public void showAllStudents() {
+        List<Student> students = studentController.getAllStudents();
+        System.out.println("所有学生信息：");
+        for (Student student : students) {
+            System.out.printf("ID: %d, 姓名: %s, 性别: %s, 出生日期: %s, 电话: %s, 地址: %s%n",
+                    student.getStudentId(), student.getName(), student.getGender(),
+                    student.getBirthDate(), student.getPhone(), student.getAddress());
+        }
+    }
+
+    public void addStudent() {
+        System.out.print("请输入学生姓名: ");
+        String name = scanner.nextLine();
+        System.out.print("请输入性别: ");
+        String gender = scanner.nextLine();
+        System.out.print("请输入出生日期 (YYYY-MM-DD): ");
+        String birthDate = scanner.nextLine();
+        System.out.print("请输入电话: ");
+        String phone = scanner.nextLine();
+        System.out.print("请输入地址: ");
+        String address = scanner.nextLine();
+
+        Student student = new Student(0, name, gender, birthDate, phone, address);
+        studentController.addStudent(student);
+        System.out.println("学生添加成功！");
+    }
+
+    public void updateStudent() {
+        System.out.print("请输入要更新的学生ID: ");
+        int studentId = scanner.nextInt();
+        scanner.nextLine();  // 处理换行
+
+        System.out.print("请输入新的学生姓名: ");
+        String name = scanner.nextLine();
+        System.out.print("请输入新的性别: ");
+        String gender = scanner.nextLine();
+        System.out.print("请输入新的出生日期 (YYYY-MM-DD): ");
+        String birthDate = scanner.nextLine();
+        System.out.print("请输入新的电话: ");
+        String phone = scanner.nextLine();
+        System.out.print("请输入新的地址: ");
+        String address = scanner.nextLine();
+
+        Student student = new Student(studentId, name, gender, birthDate, phone, address);
+        studentController.updateStudent(student);
+        System.out.println("学生信息更新成功！");
+    }
+
+    public void deleteStudent() {
+        System.out.print("请输入要删除的学生ID: ");
+        int studentId = scanner.nextInt();
+        scanner.nextLine();  // 处理换行
+        studentController.deleteStudent(studentId);
+        System.out.println("学生删除成功！");
+    }
+}
