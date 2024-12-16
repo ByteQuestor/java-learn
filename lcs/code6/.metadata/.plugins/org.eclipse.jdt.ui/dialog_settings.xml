@@ -2,7 +2,7 @@
 <section name="Workbench">
 	<item key="org.eclipse.jdt.ui.last.selected.jre.kind2" value="2"/>
 	<item key="org.eclipse.jdt.ui.last.selected.execution.enviroment" value="JavaSE-21"/>
-	<item key="org.eclipse.jdt.ui.lastextjar" value="E:\User\wzy\Desktop\code6\JFrameJDBC\lib"/>
+	<item key="org.eclipse.jdt.ui.lastextjar" value="E:\User\wzy\github\java-learn\lcs\code6\JFrameJDBC\lib"/>
 	<section name="org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart">
 		<item key="group_libraries" value="true"/>
 		<item key="layout" value="2"/>
@@ -49,5 +49,8 @@
 	</section>
 	<section name="NewPackageWizardPage">
 		<item key="create_package_info_java" value="false"/>
+	</section>
+	<section name="WorkingSetModelAwareSelectionDialog">
+		<item key="ShowVisibleOnly" value="true"/>
 	</section>
 </section>
