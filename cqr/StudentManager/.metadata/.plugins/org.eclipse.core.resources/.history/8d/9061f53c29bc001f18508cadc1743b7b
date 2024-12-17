@@ -1,0 +1,103 @@
+package view;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class InfoManagementSystem {
+
+    // 主界面框架
+    private JFrame frame;
+    private CardLayout cardLayout; // 用于切换不同的功能界面
+    private JPanel cardPanel; // 存放不同功能模块的面板
+
+    // 入口方法
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            try {
+                InfoManagementSystem window = new InfoManagementSystem();
+                window.frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    // 创建并展示界面
+    public InfoManagementSystem() {
+        initialize();
+    }
+
+    // 初始化界面
+    private void initialize() {
+        // 创建主框架
+        frame = new JFrame("信息管理系统");
+        frame.setBounds(100, 100, 800, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // 创建主布局：使用 BorderLayout
+        frame.getContentPane().setLayout(new BorderLayout());
+
+        // 创建导航栏
+        JPanel navigationPanel = new JPanel();
+        navigationPanel.setLayout(new GridLayout(1, 4)); // 四个按钮
+        JButton btnQuery = new JButton("信息查询");
+        JButton btnAdd = new JButton("新增信息");
+        JButton btnUpdate = new JButton("修改信息");
+        JButton btnDelete = new JButton("删除信息");
+
+        navigationPanel.add(btnQuery);
+        navigationPanel.add(btnAdd);
+        navigationPanel.add(btnUpdate);
+        navigationPanel.add(btnDelete);
+
+        // 为按钮添加事件监听器
+        btnQuery.addActionListener(e -> cardLayout.show(cardPanel, "query"));
+        btnAdd.addActionListener(e -> cardLayout.show(cardPanel, "add"));
+        btnUpdate.addActionListener(e -> cardLayout.show(cardPanel, "update"));
+        btnDelete.addActionListener(e -> cardLayout.show(cardPanel, "delete"));
+
+        // 将导航栏添加到北部
+        frame.getContentPane().add(navigationPanel, BorderLayout.NORTH);
+
+        // 创建功能面板：使用 CardLayout
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+
+        // 信息查询面板
+        JPanel queryPanel = new JPanel();
+        queryPanel.add(new JLabel("信息查询界面"));
+        // 可以在此处添加查询功能相关的组件
+
+        // 新增信息面板
+        JPanel addPanel = new JPanel();
+        addPanel.add(new JLabel("新增信息界面"));
+        // 可以在此处添加新增功能相关的组件
+
+        // 修改信息面板
+        JPanel updatePanel = new JPanel();
+        updatePanel.add(new JLabel("修改信息界面"));
+        // 可以在此处添加修改功能相关的组件
+
+        // 删除信息面板
+        JPanel deletePanel = new JPanel();
+        deletePanel.add(new JLabel("删除信息界面"));
+        // 可以在此处添加删除功能相关的组件
+
+        // 将功能面板加入到cardPanel
+        cardPanel.add(queryPanel, "query");
+        cardPanel.add(addPanel, "add");
+        cardPanel.add(updatePanel, "update");
+        cardPanel.add(deletePanel, "delete");
+
+        // 将cardPanel添加到中心
+        frame.getContentPane().add(cardPanel, BorderLayout.CENTER);
+
+        // 状态栏
+        JLabel statusLabel = new JLabel("状态栏：系统正常运行", JLabel.CENTER);
+        statusLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        frame.getContentPane().add(statusLabel, BorderLayout.SOUTH);
+    }
+}
+

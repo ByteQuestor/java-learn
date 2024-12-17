@@ -86,7 +86,7 @@ CREATE TABLE `students` (
 -- Records of students
 -- ----------------------------
 INSERT INTO `students` VALUES ('1', '王子阳', '男', '2000-01-01', '13900000001', '北京市海淀区');
-INSERT INTO `students` VALUES ('2', '蔡青茹', '女', '1999-03-10', '13900000002', '上海市浦东新区');
+INSERT INTO `students` VALUES ('2', '蔡青茹', '女', '2004-03-10', '13900000002', '上海市浦东新区');
 INSERT INTO `students` VALUES ('3', '王五', '男', '2001-05-15', '13900000003', '广州市天河区');
 INSERT INTO `students` VALUES ('4', '赵六', '女', '2000-07-20', '13900000004', '深圳市南山区');
 INSERT INTO `students` VALUES ('5', '周七', '男', '1998-08-30', '13900000005', '重庆市渝中区');
