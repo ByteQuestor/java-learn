@@ -267,7 +267,8 @@ public class StudentManagerView {
 		// 将新增信息通过控制器添加到数据库
 		StudentController controller = new StudentController(this);
 		controller.addStudent(studentId, name, gender, formattedBirthDate, phone, address);
-
+		// 更新表格
+		updateStudentTable();
 		// 清空输入框
 		// addStudentIdField.setText("");
 		editNameField.setText("");
@@ -340,6 +341,8 @@ public class StudentManagerView {
 		// 将修改的信息通过控制器提交到数据库
 		StudentController controller = new StudentController(this);
 		controller.updateStudent(studentId, name, gender, dob, phone, address);
+		// 更新表格
+		updateStudentTable();
 	}
 
 }
