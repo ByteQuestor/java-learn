@@ -104,7 +104,7 @@ public class StudentManagerView {
 		editPanel.setSize(10, 10);
 		editStudentIdField = new JTextField();
 		editStudentIdField.setEditable(false); // 学生ID不可编辑
-		editStudentIdField.setPreferredSize(new Dimension(2000000, 30)); // 设置大小
+		editStudentIdField.setPreferredSize(new Dimension(20, 30)); // 设置大小，不过好像没有用
 		editPanel.add(editStudentIdField);
 
 		editPanel.add(new JLabel("姓名:"));
@@ -344,5 +344,4 @@ public class StudentManagerView {
 		// 更新表格
 		updateStudentTable();
 	}
-
 }

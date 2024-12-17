@@ -27,7 +27,7 @@ public class DatabaseManager {
             if (resultSet != null) resultSet.close();
             if (statement != null) statement.close();
             if (connection != null) connection.close();
-        } catch (SQLException e) {
+		} catch (SQLException e) {
             e.printStackTrace();
         }
     }
