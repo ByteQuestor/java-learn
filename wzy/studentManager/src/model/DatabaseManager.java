@@ -31,44 +31,4 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-
-    // 查询所有学生信息
-    public static void getAllStudents() {
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-        
-        try {
-            // 获取数据库连接
-            connection = getConnection();
-            System.out.println("数据库连接成功！");
-
-            // 执行查询语句，查询所有学生
-            String query = "SELECT * FROM students";
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
-
-            // 输出查询结果
-            System.out.println("所有学生信息：");
-            while (resultSet.next()) {
-                System.out.println("学生ID: " + resultSet.getInt("student_id"));
-                System.out.println("姓名: " + resultSet.getString("name"));
-                System.out.println("性别: " + resultSet.getString("gender"));
-                System.out.println("出生日期: " + resultSet.getDate("birth_date"));
-                System.out.println("电话: " + resultSet.getString("phone"));
-                System.out.println("地址: " + resultSet.getString("address"));
-                System.out.println("--------------------------");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // 关闭连接
-            closeConnection(connection, statement, resultSet);
-        }
-    }
-
-    // 主函数
-    public static void main(String[] args) {
-        getAllStudents();  // 查询并打印所有学生的信息
-    }
 }
