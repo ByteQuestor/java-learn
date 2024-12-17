@@ -13,7 +13,6 @@ public class PanelFactory {
 
         Border panelBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), title);
         panel.setBorder(panelBorder);
-        panel.add(new JLabel(title + "界面"), BorderLayout.CENTER);
         return panel;
     }
 }

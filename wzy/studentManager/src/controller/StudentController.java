@@ -125,4 +125,36 @@ public class StudentController {
             DatabaseManager.closeConnection(connection, preparedStatement, null);
         }
     }
+    
+    //获取当前最大的id值
+    public int getMaxStudentId() {
+        int maxStudentId = 0;
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // 获取数据库连接
+            connection = DatabaseManager.getConnection();
+            
+            // 查询最大学生ID
+            String query = "SELECT MAX(student_id) FROM students";  // 根据你的表和字段名称进行调整
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            // 获取查询结果
+            if (resultSet.next()) {
+                maxStudentId = resultSet.getInt(1); // 获取最大学生ID
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // 关闭资源
+            DatabaseManager.closeConnection(connection, statement, resultSet);
+        }
+
+        return maxStudentId;  // 返回最大学生ID
+    }
+
+
 }
