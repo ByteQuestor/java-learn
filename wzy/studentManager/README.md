@@ -314,7 +314,7 @@ public class StudentController {
 >
 > - **`MVC` 架构**：
 > - **Model**：数据库操作（如增删改查）通常由 `StudentController` 和数据库相关类（如 `DatabaseManager`）实现。
-> - **View**：通过 Swing 构建用户界面，提供显示学生信息和表单输入的功能。
+> - **View**：` Swing` 构建用户界面，提供显示学生信息和表单输入的功能。
 > - **Controller**：控制器类（`StudentController`）接收视图中的用户输入，调用模型中的方法处理数据，并更新视图。
 >
 > **Swing**：用于构建图形用户界面。代码通过 `Swing` 创建了一个具有多个界面（面板）切换功能的面板。
@@ -331,7 +331,7 @@ public class StudentController {
 > - `JSpinner` ：用于用户输入和交互。
 > - `JScrollPane`：用于为表格提供滚动功能（这个平时看不出来，等添加太多数据的时候，就能出现效果）。
 >
-> **事件监听器**（ `ActionListener` 和 `MouseListener`）处理交互，例如按钮点击和表格行选择，来触发`CRUD`
+> **事件监听器**（ `ActionListener` 和 `MouseListener`）处理交互，就是按钮点击和表格行选择，来触发`CRUD`
 >
 > **数据绑定**：通过表格（`JTable`）来显示学生信息，并将数据与数据库中的记录关联。通过点击表格的某一行，可以自动填充到下方的编辑框中进行修改或删除操作。
 >
