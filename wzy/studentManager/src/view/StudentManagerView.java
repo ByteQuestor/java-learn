@@ -92,14 +92,21 @@ public class StudentManagerView {
 		// 定义列名
 		String[] columnNames = { "学生ID", "姓名", "性别", "出生日期", "电话", "地址" };
 
-		// 设置表格模型
-		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-
+//		// 设置表格模型
+//		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+		// 设置表格模型，禁止编辑
+	    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+	        // 重写此方法以禁止编辑
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false; // 禁止所有单元格编辑
+	        }
+	    };
 		// 将学生数据添加到表格中
 		for (String[] student : students) {
 			model.addRow(student);
 		}
-
+		
 		// 设置表格数据
 		allStudentTable.setModel(model);
 		addStudentTable.setModel(model);
