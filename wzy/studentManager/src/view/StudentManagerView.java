@@ -30,9 +30,10 @@ public class StudentManagerView {
 	private JSpinner birthDateSpinner; // 使用 JSpinner 来选择日期
 	private JTextField addStudentIdField, addNameField, addDobField, addPhoneField, addAddressField;
 	// 提交按钮
-	private JButton submitButton;
+	private JButton submitButton, deleteButton;
 	// 新增按钮
 	private JButton addButton;
+	private int deleteRow = -1;
 
 	public StudentManagerView() {
 		initialize();
@@ -97,10 +98,13 @@ public class StudentManagerView {
 		queryContentPanel.add(allScrollPane, BorderLayout.CENTER); // 数据表格放在上部
 
 		// 下半部分：修改框
-		JPanel editPanel = new JPanel(new GridLayout(7, 2, 5, 5)); // 使用 GridLayout 显示修改框
+		JPanel editPanel = new JPanel(new GridLayout(4, 2, 5, 5)); // 显示个数4 、
+
 		editPanel.add(new JLabel("学生ID:"));
+		editPanel.setSize(10, 10);
 		editStudentIdField = new JTextField();
 		editStudentIdField.setEditable(false); // 学生ID不可编辑
+		editStudentIdField.setPreferredSize(new Dimension(2000000, 30)); // 设置大小
 		editPanel.add(editStudentIdField);
 
 		editPanel.add(new JLabel("姓名:"));
@@ -128,7 +132,10 @@ public class StudentManagerView {
 		submitButton = new JButton("提交修改");
 		editPanel.add(new JLabel()); // 添加一个空的占位标签
 		editPanel.add(submitButton);
-
+		// 删除按钮
+		deleteButton = new JButton("删除信息");
+		editPanel.add(new JLabel()); // 添加一个空的占位标签
+		editPanel.add(deleteButton);
 		queryContentPanel.add(editPanel, BorderLayout.SOUTH); // 修改框放在下半部分
 
 		// 将queryContentPanel直接添加到cardPanel
@@ -137,10 +144,6 @@ public class StudentManagerView {
 		updateStudentTable = new JTable();
 		JScrollPane updateScrollPane = new JScrollPane(updateStudentTable);
 		updatePanel.add(updateScrollPane, BorderLayout.CENTER); // 将表格放入修改面板的中间部分
-
-		deleteStudentTable = new JTable();
-		JScrollPane deleteScrollPane = new JScrollPane(deleteStudentTable);
-		deletePanel.add(deleteScrollPane, BorderLayout.CENTER); // 将表格放入删除面板的中间部分
 
 		// 添加表格行点击事件监听器
 		allStudentTable.addMouseListener(new MouseAdapter() {
@@ -163,6 +166,7 @@ public class StudentManagerView {
 					dobField.setText(dob);
 					editPhoneField.setText(phone);
 					editAddressField.setText(address);
+					deleteRow = Integer.parseInt(studentId);
 				}
 			}
 		});
@@ -175,6 +179,9 @@ public class StudentManagerView {
 		});
 		// 新增信息面板
 		addStudentForm(addPanel);
+
+		// 监听删除按钮点击事件
+		deleteButton.addActionListener(e -> handleDeleteButtonClick());
 	}
 
 	// 新增信息按钮
@@ -245,10 +252,10 @@ public class StudentManagerView {
 	}
 
 	private void handleAddButtonClick() {
-		//String studentId = addStudentIdField.getText();
+		// String studentId = addStudentIdField.getText();
 		StudentController addController = new StudentController(this);
 		System.out.print(Integer.toString(addController.getMaxStudentId()));
-		String studentId = null;//让数据库自动处理id号
+		String studentId = null;// 让数据库自动处理id号
 		String name = addNameField.getText();
 		String gender = maleRadioButton.isSelected() ? "男" : "女";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -256,18 +263,39 @@ public class StudentManagerView {
 		String formattedBirthDate = sdf.format(birthDate);
 		String phone = addPhoneField.getText();
 		String address = addAddressField.getText();
-		
+
 		// 将新增信息通过控制器添加到数据库
 		StudentController controller = new StudentController(this);
 		controller.addStudent(studentId, name, gender, formattedBirthDate, phone, address);
 
 		// 清空输入框
-		//addStudentIdField.setText("");
+		// addStudentIdField.setText("");
 		editNameField.setText("");
 		maleRadioButton.setSelected(true); // 默认选中男
 		birthDateSpinner.setValue(new Date()); // 重置日期选择器为当前日期
 		addPhoneField.setText("");
 		addAddressField.setText("");
+	}
+
+	private void handleDeleteButtonClick() {
+		// int selectedRow = deleteStudentTable.getSelectedRow();
+		if (deleteRow != -1) {
+			StudentController controller = new StudentController(this);
+			System.out.print(deleteRow);
+			controller.deleteStudent(Integer.toString(deleteRow));
+
+			// 更新表格
+			updateStudentTable();
+		} else {
+			JOptionPane.showMessageDialog(frame, "请选择要删除的学生", "删除失败", JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
+	// 更新查询面板的学生列表
+	public void updateStudentTable() {
+		// 获取所有学生信息
+		StudentController controller = new StudentController(this);
+		controller.loadStudentData(); // 获取学生数据
 	}
 
 	// 渲染学生信息到表格

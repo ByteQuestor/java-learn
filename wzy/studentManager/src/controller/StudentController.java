@@ -14,7 +14,7 @@ public class StudentController {
         this.view = view;
     }
 
-    // Get student data and pass to the view
+    // 加载数据库数据
     public void loadStudentData() {
         Connection connection = null;
         Statement statement = null;
@@ -46,7 +46,7 @@ public class StudentController {
         }
     }
 
-    // Add student to the database
+    // 添加学生到数据库
     public void addStudent(String studentId, String name, String gender, String birthDate, String phone, String address) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -74,7 +74,7 @@ public class StudentController {
         }
     }
 
-    // Update student info
+    // 更新学生信息
     public void updateStudent(String studentId, String name, String gender, String birthDate, String phone, String address) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -102,7 +102,7 @@ public class StudentController {
         }
     }
 
-    // Delete student info
+    // 删除学生信息
     public void deleteStudent(String studentId) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
