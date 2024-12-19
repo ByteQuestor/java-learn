@@ -2,6 +2,28 @@
 
 # `v1.0`
 
+## 项目结构
+
+```tex
+
+src/
+├── main
+│   └── Main.java				# 程序入口
+├── model
+│   ├── DatabaseManager.java	# 数据库连接类
+└── view
+    ├── bookManager.java		# 旧的UI	
+    ├── buy.java				# 买书窗口	
+    ├── LibraryLoginFrame.java	# 登录窗口
+    ├── query.java				# 查询窗口
+    ├── rank.java				# 排行榜
+    ├── refound.java			# 退货窗口
+    ├── replenish.java			# 进货窗口
+    └── select.java				# 选择窗口
+src/
+└── bookmanage.sql				# 数据库转储文件，内置数据库-数据表创建，直接运行转储文件即可
+```
+
 ## 一、数据库设计
 
 ### 数据库名称：`bookmanage`
@@ -1167,9 +1189,11 @@ public class replenish extends JFrame{
 + 【书籍排行榜】仅仅未实现销量排行榜
 + 【书籍退货】未实现名字查询
 + 【书籍进货】未实现名字查询
++ 【登录】登录时间没有记录
 
 ## 四、计划补充
 
 + 注册功能
 + 名字查询
++ 在登陆后插入当前时间
 
