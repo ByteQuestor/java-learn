@@ -135,7 +135,7 @@ public class QueryPanel {
 		// String studentId = allStudentTable.getValueAt(deleteRow, 0).toString();
 		if (deleteID != -1) {
 			StudentController controller = new StudentController(this.parentView);
-			String studentId = allStudentTable.getValueAt(deleteID - 1, 0).toString();
+			String studentId = allStudentTable.getValueAt(deleteRow, 0).toString();
 			System.out.print("String删除学生，id=" + studentId + "\n");
 			controller.deleteStudent(studentId);
 			updateStudentTable();

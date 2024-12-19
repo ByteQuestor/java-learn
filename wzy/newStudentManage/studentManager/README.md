@@ -830,32 +830,52 @@ public class Student {
 }
 ```
 
-# v2.0
+# v1.1
 
 项目结构
 
-```tex
-StudentManagement/
-│
-├── controller/
-│   └── StudentController.java      // 处理用户交互逻辑
-│
-├── model/
-│   ├── Student.java               // 学生实体类
-│   └── StudentDAO.java            // 数据库操作类
-│
-├── view/
-│   ├── StudentManagerView.java    // 主界面类
-│   ├── StudentPanel.java          // 学生信息展示面板
-│   ├── AddStudentPanel.java       // 新增学生面板
-│   ├── EditStudentPanel.java      // 编辑学生面板
-│   └── PanelFactory.java          // 面板工厂类
-│
-├── util/
-│   └── DatabaseUtil.java          // 数据库工具类（如果需要数据库连接配置）
-├── main/
-    └── Main.java                      // 启动类，主程序入口
+```ini
+|-- README.md     
+|-- lib
+|   `-- mysql-connector-j-9.0.0.jar
+|-- sql
+|   `-- students.sql
+|-- src
+|   |-- controller
+|   |   |-- BindView.java			# 将视图绑定单独拉出来
+|   |   `-- StudentController.java	# 学生类交互逻辑
+|   |-- main
+|   |   `-- Main.java				# 程序主入口
+|   |-- model
+|   |   |-- DatabaseManager.java	# 数据库链接类
+|   |   `-- Student.java			# 学生类
+|   `-- view
+|       |-- AddPanel.java			# 新增信息窗口
+|       |-- DeletePanel.java		# 删除信息窗口【未使用，功能已集合至QueryPanel，准备改造成课表】
+|       |-- Login.java				# 登录窗口，权限控制【分为老师和学生】
+|       |-- NavigationPanel.java	# 导航面板类，创建包含导航按钮的面板，用于切换不同功能界面
+|       |-- QueryPanel.java			# 工作桌面窗口，会显示所有学生和修改、删除
+|       |-- StudentManagerView.java	# 主界面窗口，包含上述小窗口
+|       `-- UpdatePanel.java		# 更新信息窗口【未使用，功能已集合至QueryPanel，准备改造成消息记录】
+`-- tree.exe
 ```
 
+此版本概述：
 
++ 此版本解决了上个版本的冗余问题，将`StudentManagerView`类进行了拆分
+
+  + `QueryPanel`
+  + `NavigationPanel`
+  + `AddPanel`
+  + `BindView`
+
++ 新增权限控制
+
+  + `Login`：主要分为学生登录和老师登录
+
+## 程序概述
+
+项目流程图：`https://www.processon.com/v/676420d971c12c3fe9f5b7e5?cid=67641fb7bdc47e0f5b40c78a`
+
+  
 
