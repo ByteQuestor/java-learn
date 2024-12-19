@@ -1,126 +1,97 @@
 package view;
 
-//public class Login {
+import javax.swing.*;
 
-//}
+import controller.BindView;
 
-import java.awt.Component; 
-import java.awt.Event; 
-import java.awt.Font; 
-import java.awt.event.ActionEvent; 
-import java.awt.event.ActionListener; 
-import java.awt.event.KeyAdapter; 
-import java.awt.event.KeyEvent; 
-import java.awt.event.WindowAdapter; 
-import java.awt.event.WindowEvent; 
+import java.awt.event.*;
 
-import javax.security.auth.kerberos.KeyTab; 
-import javax.swing.JButton; 
-import javax.swing.JDialog; 
-import javax.swing.JLabel; 
-import javax.swing.JOptionPane; 
-import javax.swing.JPasswordField; 
-import javax.swing.JTextField; 
-
-/**
- * 类：登陆界面设置
- * @author Abe
- * 父类JDialog 接口ActionListenner
- */
-@SuppressWarnings("serial")
-public class Login extends JDialog implements ActionListener {
-    private JButton loginButton, cancelButton;
-    private JLabel uidLabel, pwdLabel;
+public class Login extends JFrame implements ActionListener {
+    private JButton studentLoginButton, teacherLoginButton, cancelButton;
     private JTextField uidField;
-    private JPasswordField pwdField; 
+    private JPasswordField pwdField;
 
     public Login() {
-        this.setSize(320, 240);
-        this.setTitle("图书馆管理系统");
-        this.setResizable(false);
-        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        this.setLocationRelativeTo(null);
+        // 设置窗口基本属性
+        this.setSize(300, 200);
+        this.setTitle("登录系统");
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(null);
+        this.setLocationRelativeTo(null);
 
-        // 窗口关闭事件监听
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                if (JOptionPane.showConfirmDialog(null, "亲~真的要离开我吗？~") == 0) {
-                    System.exit(0);
-                }
-            }
-        });
-
-        initComponents(); 
+        // 初始化组件
+        initComponents();
     }
 
-    /**
-     * 方法：组件添加
-     */
     private void initComponents() {
-        loginButton = new JButton("登陆");
-        loginButton.setBounds(70, 160, 80, 30);
-        this.add(loginButton);
+        // 学生登录按钮
+        studentLoginButton = new JButton("学生登录");
+        studentLoginButton.setBounds(40, 120, 100, 30);
+        studentLoginButton.addActionListener(this);
+        this.add(studentLoginButton);
 
+        // 老师登录按钮
+        teacherLoginButton = new JButton("老师登录");
+        teacherLoginButton.setBounds(160, 120, 100, 30);
+        teacherLoginButton.addActionListener(this);
+        this.add(teacherLoginButton);
+
+        // 取消按钮
         cancelButton = new JButton("取消");
-        cancelButton.setBounds(170, 160, 80, 30);
+        cancelButton.setBounds(100, 160, 100, 30);
+        cancelButton.addActionListener(this);
         this.add(cancelButton);
 
-        uidLabel = new JLabel("用户名：");
-        uidLabel.setBounds(50, 50, 60, 30);
-        this.add(uidLabel);
-
-        pwdLabel = new JLabel("密 码：");
-        pwdLabel.setBounds(50, 100, 60, 30);
-        this.add(pwdLabel);
-
+        // 用户名输入框
         uidField = new JTextField();
-        uidField.setBounds(120, 50, 120, 30);
+        uidField.setBounds(100, 40, 120, 30);
         this.add(uidField);
 
+        // 密码输入框
         pwdField = new JPasswordField();
-        pwdField.setBounds(120, 100, 120, 30);
+        pwdField.setBounds(100, 80, 120, 30);
         this.add(pwdField);
 
-        Font font = new Font("微软雅黑", Font.PLAIN, 14);
-        for (Component c : this.getContentPane().getComponents()) {
-            c.setFont(font);
-            if (c instanceof JButton) {
-                ((JButton) c).addActionListener(this);
-            }
-        }
+        // 标签
+        JLabel uidLabel = new JLabel("用户名：");
+        uidLabel.setBounds(30, 40, 60, 30);
+        this.add(uidLabel);
 
-        // 键盘监听，回车切换焦点和点击登录
-        uidField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == 10){
-                    pwdField.requestFocus();
-                }
-            }
-        });
-        pwdField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == 10) {
-                    loginButton.doClick();
-                }
-            }
-        });
+        JLabel pwdLabel = new JLabel("密码：");
+        pwdLabel.setBounds(30, 80, 60, 30);
+        this.add(pwdLabel);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // 在此添加按钮点击事件的处理逻辑
-        if (e.getSource() == loginButton) {
-            // 登录按钮点击事件处理
+        if (e.getSource() == studentLoginButton) {
+            login(0);
+        } else if (e.getSource() == teacherLoginButton) {
+            login(1);
         } else if (e.getSource() == cancelButton) {
-            // 取消按钮点击事件处理
+            // 清空输入框
+            uidField.setText("");
+            pwdField.setText("");
         }
     }
 
-    public static void main(String[] args) {
-        new Login().setVisible(true);
+    private void login(int role) {
+    	if(role == 0) {
+    		//学生登录
+            JOptionPane.showMessageDialog(this,"学生视图未开发");
+    	}else if(role == 1){
+    		//老师登录
+    		//封装视图绑定
+            BindView teacherView = new BindView();
+            teacherView.bind();
+    	}
+        String username = uidField.getText();
+        String password = new String(pwdField.getPassword());
+
     }
+
+//    public static void main(String[] args) {
+//    	System.out.print("aaaa");
+//        new Login().setVisible(true);
+//    }
 }
