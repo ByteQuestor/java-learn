@@ -1,5 +1,7 @@
 # 图书管理系统说明书
 
+项目地址：`https://github.com/ByteQuestor/java-learn/tree/main/wzy/bookManager`
+
 # `v1.0`
 
 ## 项目结构
