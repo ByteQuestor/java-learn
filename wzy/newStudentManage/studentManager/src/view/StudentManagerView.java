@@ -94,12 +94,20 @@ public class StudentManagerView {
         queryPanel.addSubmitListener(listener);
     }
 
-    public void updateStudentTable() {
-        queryPanel.updateStudentTable();
-    }
+    
 
     public void displayStudents(List<String[]> students) {
         queryPanel.displayStudents(students);
     }
-
+    
+    public void displayCourses(List<String[]> course) {
+        queryPanel.displayCourses(course);
+    }
+    
+    public void updateStudentTable() {
+        queryPanel.updateStudentTable();
+    }
+    public void updateCourseTable() {
+        queryPanel.updateCourseTable();
+    }
 }

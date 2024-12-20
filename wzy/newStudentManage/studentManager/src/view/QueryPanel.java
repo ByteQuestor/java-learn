@@ -3,6 +3,7 @@ package view;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import controller.CourseController;
 import controller.StudentController;
 
 import java.awt.*;
@@ -16,7 +17,7 @@ import java.awt.event.MouseEvent;
 public class QueryPanel {
 
 	private JPanel panel;
-	private JTable allStudentTable;
+	private JTable allStudentTable,allCourseTable;
 	private JTextField editStudentIdField, editNameField, dobField, editPhoneField, editAddressField;
 	private JComboBox<String> genderComboBox;
 	private JButton submitButton, deleteButton;
@@ -31,6 +32,7 @@ public class QueryPanel {
 	private void initialize() {
 		panel = new JPanel(new BorderLayout());
 		allStudentTable = new JTable();
+		allCourseTable = new JTable();//渲染课程表
 		allStudentTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -112,10 +114,15 @@ public class QueryPanel {
 	}
 
 	// 更新查询面板的学生列表
-	public void updateStudentTable() {
-		StudentController controller = new StudentController(this.parentView);
-		controller.loadStudentData();
-	}
+		public void updateStudentTable() {
+			StudentController controller = new StudentController(this.parentView);
+			controller.loadStudentData();
+		}
+		// 更新课程表
+		public void updateCourseTable() {
+			CourseController controller = new CourseController(this.parentView);
+			controller.loadCourseData();
+		}
 
 	public void displayStudents(List<String[]> students) {
 		String[] columnNames = { "学生ID", "姓名", "性别", "出生日期", "电话", "地址" };
@@ -127,6 +134,17 @@ public class QueryPanel {
 		};
 		students.forEach(student -> model.addRow(student));
 		allStudentTable.setModel(model);
+	}
+	public void displayCourses(List<String[]> course) {
+		String[] columnNames = { "课程ID", "课程名称", "课程代码", "任课老师"};
+		DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		course.forEach(student -> model.addRow(student));
+		allCourseTable.setModel(model);
 	}
 
 	// 处理【删除信息】点击事件

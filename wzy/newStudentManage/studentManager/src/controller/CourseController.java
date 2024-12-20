@@ -19,7 +19,7 @@ public class CourseController {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
-        List<String[]> students = new ArrayList<>();
+        List<String[]> courses = new ArrayList<>();
 
         try {
             connection = DatabaseManager.getConnection();
@@ -33,10 +33,10 @@ public class CourseController {
                 String coursePhone = resultSet.getString("course_code");
                 String courseAddress = resultSet.getString("teacher_name");
 
-                students.add(new String[] { courseId, courseName, coursePhone, courseAddress });
+                courses.add(new String[] { courseId, courseName, coursePhone, courseAddress });
             }
 
-            view.displayStudents(students);
+            view.displayCourses(courses);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
