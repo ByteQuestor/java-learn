@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class UserController {
 
-    // 登录验证方法
+	// 登录验证方法
     public boolean login(String username, String password,String role) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -20,6 +20,35 @@ public class UserController {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, role);
+            resultSet = preparedStatement.executeQuery();
+
+            // 如果查询结果存在，表示验证通过
+            if (resultSet.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DatabaseManager.closeConnection(connection, preparedStatement, resultSet);
+        }
+    }
+ // 登录验证方法
+    public boolean studentLogin(String username, String password) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DatabaseManager.getConnection();
+            String query = "SELECT * FROM User WHERE name = ? AND password = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            //preparedStatement.setString(3, role);
             resultSet = preparedStatement.executeQuery();
 
             // 如果查询结果存在，表示验证通过

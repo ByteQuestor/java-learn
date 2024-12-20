@@ -18,7 +18,7 @@ public class QueryPanel {
 
 	private JPanel panel;
 	private JTable allStudentTable, allCourseTable;
-	private JTextField editStudentIdField, editNameField, dobField, editPhoneField, editAddressField;
+	private JTextField editStudentIdField, editNameField, dobField, editPhoneField, editAddressField,editPasswordField;
 	private JComboBox<String> genderComboBox;
 	private JButton submitButton, deleteButton;
 	private int deleteID = -1, deleteRow = -1;
@@ -46,6 +46,7 @@ public class QueryPanel {
 					dobField.setText(allStudentTable.getValueAt(selectedRow, 3).toString());
 					editPhoneField.setText(allStudentTable.getValueAt(selectedRow, 4).toString());
 					editAddressField.setText(allStudentTable.getValueAt(selectedRow, 5).toString());
+					editPasswordField.setText(allStudentTable.getValueAt(selectedRow, 6).toString());
 					// 获取要删除的学生的id
 					String studentIdStr = allStudentTable.getValueAt(selectedRow, 0).toString();
 					deleteRow = selectedRow;
@@ -99,6 +100,10 @@ public class QueryPanel {
 		editPanel.add(new JLabel("地址:"));
 		editAddressField = new JTextField();
 		editPanel.add(editAddressField);
+		
+		editPanel.add(new JLabel("密码:"));
+		editPasswordField = new JTextField();
+		editPanel.add(editPasswordField);
 
 		// 提交和删除按钮
 		submitButton = new JButton("提交修改");
@@ -136,7 +141,7 @@ public class QueryPanel {
 	}
 
 	public void displayStudents(List<String[]> students) {
-		String[] columnNames = { "学生ID", "姓名", "性别", "出生日期", "电话", "地址" };
+		String[] columnNames = { "学生ID", "姓名", "性别", "出生日期", "电话", "地址","密码" };
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -169,6 +174,7 @@ public class QueryPanel {
 			System.out.print("String删除学生，id=" + studentId + "\n");
 			controller.deleteStudent(studentId);
 			updateStudentTable();
+			
 		} else {
 			System.out.print("未选中\n");
 		}
@@ -182,9 +188,9 @@ public class QueryPanel {
 		String dob = dobField.getText();
 		String phone = editPhoneField.getText();
 		String address = editAddressField.getText();
-
+		String password = editPasswordField.getText();
 		StudentController controller = new StudentController(this.parentView);
-		controller.updateStudent(studentId, name, gender, dob, phone, address);
+		controller.updateStudent(studentId, name, gender, dob, phone, address,password);
 		updateStudentTable();
 	}
 }

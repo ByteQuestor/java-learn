@@ -45,7 +45,7 @@ public class Login extends JFrame implements ActionListener {
 		this.add(adminLoginButton);
 
 		// 取消按钮
-		cancelButton = new JButton("取消");
+		cancelButton = new JButton("重置");
 		cancelButton.setBounds(100, 160, 100, 30);
 		cancelButton.addActionListener(this);
 		this.add(cancelButton);
@@ -90,7 +90,7 @@ public class Login extends JFrame implements ActionListener {
 		String password = new String(pwdField.getPassword());
 		String sql_role = String.valueOf(role);
 		BindView View = new BindView();
-		if (role == 0 && userController.login(username, password, sql_role)) {
+		if (role == 0 && userController.studentLogin(username, password)) {
 			// 学生登录
 			//JOptionPane.showMessageDialog(this, "学生视图未开发");
 			// 封装视图绑定

@@ -10,12 +10,14 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2024-12-20 11:15:14
+Date: 2024-12-20 22:00:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
 CREATE DATABASE students;
 USE students;
+
 -- ----------------------------
 -- Table structure for course
 -- ----------------------------
@@ -71,17 +73,19 @@ CREATE TABLE `students` (
   `birth_date` date DEFAULT NULL,
   `phone` varchar(15) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
   PRIMARY KEY (`student_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of students
 -- ----------------------------
-INSERT INTO `students` VALUES ('1', '蔡青茹', '女', '2004-03-01', '13900000001', '北京市海淀区');
-INSERT INTO `students` VALUES ('2', 'wzy', '男', '2004-03-10', '13900000002', '上海市浦东新区');
-INSERT INTO `students` VALUES ('3', '王五', '男', '2001-05-15', '13900000003', '广州市天河区');
-INSERT INTO `students` VALUES ('4', '赵六', '女', '2000-07-20', '13900000004', '深圳市南山区');
-INSERT INTO `students` VALUES ('5', '周七', '男', '1998-08-30', '13900000005', '重庆市渝中区');
+INSERT INTO `students` VALUES ('1', '蔡菁茹', '女', '2004-03-01', '13900000001', '北京市海淀区', '000000');
+INSERT INTO `students` VALUES ('2', '任紫阳', '男', '2004-03-10', '13900000002', '上海市浦东新区', '000000');
+INSERT INTO `students` VALUES ('3', '李超水', '女', '2003-05-15', '13900000003', '广州市天河区', '000000');
+INSERT INTO `students` VALUES ('4', '王子阳', '男', '2002-07-20', '13900000004', '深圳市南山区', '000000');
+INSERT INTO `students` VALUES ('5', '牛亚超', '男', '1998-08-30', '13900000005', '重庆市渝中区', '333333');
+INSERT INTO `students` VALUES ('6', '韩家骏', '男', '2002-07-11', '13900000006', '河南省驻马店市', '000000');
 
 -- ----------------------------
 -- Table structure for user
@@ -100,6 +104,6 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', '蔡菁茹', 'stu1', '000000', '0');
-INSERT INTO `user` VALUES ('2', '李四', 'tec', '000000', '1');
-INSERT INTO `user` VALUES ('3', '王子阳', 'admin', '000000', '2');
+INSERT INTO `user` VALUES ('1', '蔡菁茹', 'cjr', '000000', '1');
+INSERT INTO `user` VALUES ('2', '任紫阳', 'rzy', '000000', '1');
+INSERT INTO `user` VALUES ('3', '王子阳', 'wzy', '000000', '2');

@@ -34,8 +34,8 @@ public class StudentController {
                 String birthDate = resultSet.getDate("birth_date").toString();
                 String phone = resultSet.getString("phone");
                 String address = resultSet.getString("address");
-
-                students.add(new String[] { studentId, name, gender, birthDate, phone, address });
+                String password = resultSet.getString("password");
+                students.add(new String[] { studentId, name, gender, birthDate, phone, address,password });
             }
 
             view.displayStudents(students);
@@ -47,13 +47,13 @@ public class StudentController {
     }
 
     // 添加学生到数据库
-    public void addStudent(String studentId, String name, String gender, String birthDate, String phone, String address) {
+    public void addStudent(String studentId, String name, String gender, String birthDate, String phone, String address,String password) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
             connection = DatabaseManager.getConnection();
-            String insertQuery = "INSERT INTO students (student_id, name, gender, birth_date, phone, address) VALUES (?, ?, ?, ?, ?, ?)";
+            String insertQuery = "INSERT INTO students (student_id, name, gender, birth_date, phone, address,password) VALUES (?, ?, ?, ?, ?, ?,?)";
             preparedStatement = connection.prepareStatement(insertQuery);
 
             preparedStatement.setString(1, studentId);
@@ -62,7 +62,7 @@ public class StudentController {
             preparedStatement.setString(4, birthDate);
             preparedStatement.setString(5, phone);
             preparedStatement.setString(6, address);
-
+            preparedStatement.setString(7, password);
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("学生信息添加成功");
@@ -75,13 +75,13 @@ public class StudentController {
     }
 
     // 更新学生信息
-    public void updateStudent(String studentId, String name, String gender, String birthDate, String phone, String address) {
+    public void updateStudent(String studentId, String name, String gender, String birthDate, String phone, String address,String password) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
             connection = DatabaseManager.getConnection();
-            String updateQuery = "UPDATE students SET name = ?, gender = ?, birth_date = ?, phone = ?, address = ? WHERE student_id = ?";
+            String updateQuery = "UPDATE students SET name = ?, gender = ?, birth_date = ?, phone = ?, address = ?, password= ? WHERE student_id = ?";
             preparedStatement = connection.prepareStatement(updateQuery);
 
             preparedStatement.setString(1, name);
@@ -89,7 +89,8 @@ public class StudentController {
             preparedStatement.setString(3, birthDate);
             preparedStatement.setString(4, phone);
             preparedStatement.setString(5, address);
-            preparedStatement.setString(6, studentId);
+            preparedStatement.setString(6, password);
+            preparedStatement.setString(7, studentId);
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
