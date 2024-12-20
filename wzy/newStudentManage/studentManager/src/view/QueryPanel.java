@@ -17,22 +17,22 @@ import java.awt.event.MouseEvent;
 public class QueryPanel {
 
 	private JPanel panel;
-	private JTable allStudentTable,allCourseTable;
+	private JTable allStudentTable, allCourseTable;
 	private JTextField editStudentIdField, editNameField, dobField, editPhoneField, editAddressField;
 	private JComboBox<String> genderComboBox;
 	private JButton submitButton, deleteButton;
 	private int deleteID = -1, deleteRow = -1;
 	private StudentManagerView parentView;
 
-	public QueryPanel(StudentManagerView parentView) {
+	public QueryPanel(StudentManagerView parentView, int role) {
 		this.parentView = parentView;
-		initialize();
+		initialize(role);
 	}
 
-	private void initialize() {
+	private void initialize(int role) {
 		panel = new JPanel(new BorderLayout());
 		allStudentTable = new JTable();
-		allCourseTable = new JTable();//渲染课程表
+		allCourseTable = new JTable();// 渲染课程表
 		allStudentTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -54,10 +54,15 @@ public class QueryPanel {
 				}
 			}
 		});
-		panel.add(new JScrollPane(allStudentTable), BorderLayout.CENTER);
+		if (role == 0) {
+			panel.add(new JScrollPane(allCourseTable), BorderLayout.CENTER);// 显示课程表
+		} else if (role == 1) {
+			panel.add(new JScrollPane(allStudentTable), BorderLayout.CENTER);
 
-		JPanel editPanel = createEditPanel();
-		panel.add(editPanel, BorderLayout.SOUTH);
+			JPanel editPanel = createEditPanel();
+			panel.add(editPanel, BorderLayout.SOUTH);
+		}
+
 	}
 
 	private JPanel createEditPanel() {
@@ -114,15 +119,16 @@ public class QueryPanel {
 	}
 
 	// 更新查询面板的学生列表
-		public void updateStudentTable() {
-			StudentController controller = new StudentController(this.parentView);
-			controller.loadStudentData();
-		}
-		// 更新课程表
-		public void updateCourseTable() {
-			CourseController controller = new CourseController(this.parentView);
-			controller.loadCourseData();
-		}
+	public void updateStudentTable() {
+		StudentController controller = new StudentController(this.parentView);
+		controller.loadStudentData();
+	}
+
+	// 更新课程表
+	public void updateCourseTable() {
+		CourseController controller = new CourseController(this.parentView);
+		controller.loadCourseData();
+	}
 
 	public void displayStudents(List<String[]> students) {
 		String[] columnNames = { "学生ID", "姓名", "性别", "出生日期", "电话", "地址" };
@@ -135,8 +141,9 @@ public class QueryPanel {
 		students.forEach(student -> model.addRow(student));
 		allStudentTable.setModel(model);
 	}
+
 	public void displayCourses(List<String[]> course) {
-		String[] columnNames = { "课程ID", "课程名称", "课程代码", "任课老师"};
+		String[] columnNames = { "课程ID", "课程名称", "课程代码", "任课老师" };
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {

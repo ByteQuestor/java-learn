@@ -36,7 +36,7 @@ public class StudentManagerView {
 
         // 初始化各个功能面板
         navigationPanel = new NavigationPanel(role);
-        queryPanel = new QueryPanel(this);
+        queryPanel = new QueryPanel(this,role);
         addPanel = new AddPanel(this);
         updatePanel = new UpdatePanel();
         //deletePanel = new DeletePanel();
@@ -52,6 +52,7 @@ public class StudentManagerView {
 
         // 状态栏
         if(role == 0) {
+            cardPanel.add(queryPanel.getPanel(), "query");
         	JLabel statusLabel = new JLabel("当前身份：学生", JLabel.CENTER);
             statusLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             frame.getContentPane().add(statusLabel, BorderLayout.SOUTH);

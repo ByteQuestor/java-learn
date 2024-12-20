@@ -89,24 +89,27 @@ public class Login extends JFrame implements ActionListener {
 		String username = uidField.getText();
 		String password = new String(pwdField.getPassword());
 		String sql_role = String.valueOf(role);
+		BindView View = new BindView();
 		if (role == 0 && userController.login(username, password, sql_role)) {
 			// 学生登录
 			//JOptionPane.showMessageDialog(this, "学生视图未开发");
 			// 封装视图绑定
-			BindView teacherView = new BindView();
-			teacherView.bind(0);
+			//BindView teacherView = new BindView();
+			View.bind(0);
 		} else if (role == 1 && userController.login(username, password, sql_role)) {
 			// 老师登录
 			// 封装视图绑定
-			BindView teacherView = new BindView();
-			teacherView.bind(1);
+			//BindView teacherView = new BindView();
+			//teacherView.bind(1);
+			View.bind(1);
 		} else if (role == 2 && userController.login(username, password, sql_role)) {
 			// 管理员登录
 			// 封装视图绑定
 			// JOptionPane.showMessageDialog(this, "管理员视图未开发");
 			// 封装视图绑定
-			BindView teacherView = new BindView();
-			teacherView.bind(2);
+			//BindView teacherView = new BindView();
+			//teacherView.bind(2);
+			View.bind(2);
 		} else {
 			JOptionPane.showMessageDialog(this, "密码错误！");
 		}
