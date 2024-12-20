@@ -44,7 +44,7 @@ public class UserController {
 
         try {
             connection = DatabaseManager.getConnection();
-            String query = "SELECT * FROM User WHERE name = ? AND password = ?";
+            String query = "SELECT * FROM students WHERE name = ? AND password = ?";
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
