@@ -899,20 +899,6 @@ CREATE TABLE `Course` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
-### 2. `Student` 表 - 学生信息表
-
-```sql
-CREATE TABLE `Student` (
-  `student_id` INT(11) NOT NULL AUTO_INCREMENT,   -- 学生ID
-  `name` VARCHAR(100) NOT NULL,                    -- 姓名
-  `gender` VARCHAR(10) NOT NULL,                   -- 性别
-  `birth_date` DATE NOT NULL,                      -- 出生日期
-  `phone` VARCHAR(15) NOT NULL,                    -- 手机号
-  `address` VARCHAR(255) NOT NULL,                 -- 地址
-  PRIMARY KEY (`student_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-```
-
 ### 3. `Grade` 表 - 存储成绩信息
 
 学生的成绩信息存储在一个单独的 `Grade` 表中，这个表包含学生、课程和成绩。
@@ -952,17 +938,6 @@ VALUES
 ('Java编程基础', 'CS101', '李老师'),
 ('数据结构与算法', 'CS102', '王老师'),
 ('数据库原理', 'CS103', '赵老师');
-```
-
-#### 插入学生数据 (`Student` 表)
-
-```sql
--- 插入学生数据
-INSERT INTO `Student` (`name`, `gender`, `birth_date`, `phone`, `address`)
-VALUES
-('张三', '男', '2000-01-01', '13800000001', '北京市海淀区'),
-('李四', '女', '1999-03-15', '13800000002', '上海市浦东新区'),
-('王五', '男', '2000-07-20', '13800000003', '广州市天河区');
 ```
 
 #### 插入成绩数据 (`Grade` 表)

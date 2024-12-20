@@ -61,6 +61,11 @@ public class QueryPanel {
 
 			JPanel editPanel = createEditPanel();
 			panel.add(editPanel, BorderLayout.SOUTH);
+		} else if(role == 2) {
+			panel.add(new JScrollPane(allStudentTable), BorderLayout.CENTER);
+
+			JPanel editPanel = createEditPanel();
+			panel.add(editPanel, BorderLayout.SOUTH);
 		}
 
 	}
