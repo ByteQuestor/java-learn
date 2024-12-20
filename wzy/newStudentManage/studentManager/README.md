@@ -877,5 +877,131 @@ public class Student {
 
 项目流程图：`https://www.processon.com/v/676420d971c12c3fe9f5b7e5?cid=67641fb7bdc47e0f5b40c78a`
 
+
+
+# v1.2
+
+## 数据表
+
+1. **课程表 (`Course`)**: 存储课程的信息，如课程ID、课程名称、授课老师等。
+2. **学生表 (`Student`)**: 存储学生的信息，如学生ID、姓名、性别、出生日期、手机号等。
+3. **成绩表 (`Grade`)**: 存储学生的课程成绩，记录学生参加每门课程的成绩。
+4. **用户表 (`User`)**: 存储老师、学生、管理员的账号信息。
+### 1. `Course` 表 - 课程信息表
+
+```sql
+CREATE TABLE `Course` (
+  `course_id` INT(11) NOT NULL AUTO_INCREMENT,    -- 课程ID
+  `course_name` VARCHAR(255) NOT NULL,             -- 课程名称
+  `course_code` VARCHAR(50) NOT NULL,              -- 课程代码
+  `teacher_name` VARCHAR(100) NOT NULL,            -- 授课教师
+  PRIMARY KEY (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+### 2. `Student` 表 - 学生信息表
+
+```sql
+CREATE TABLE `Student` (
+  `student_id` INT(11) NOT NULL AUTO_INCREMENT,   -- 学生ID
+  `name` VARCHAR(100) NOT NULL,                    -- 姓名
+  `gender` VARCHAR(10) NOT NULL,                   -- 性别
+  `birth_date` DATE NOT NULL,                      -- 出生日期
+  `phone` VARCHAR(15) NOT NULL,                    -- 手机号
+  `address` VARCHAR(255) NOT NULL,                 -- 地址
+  PRIMARY KEY (`student_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+### 3. `Grade` 表 - 存储成绩信息
+
+学生的成绩信息存储在一个单独的 `Grade` 表中，这个表包含学生、课程和成绩。
+
+```sql
+CREATE TABLE `Grade` (
+  `grade_id` INT(11) NOT NULL AUTO_INCREMENT,      -- 成绩ID
+  `student_id` INT(11) NOT NULL,                   -- 学生ID
+  `course_id` INT(11) NOT NULL,                    -- 课程ID
+  `score` DECIMAL(5,2) NOT NULL,                   -- 成绩
+  PRIMARY KEY (`grade_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+```
+
+### 4.`User`用户表-存储账号信息
+
+```sql
+CREATE TABLE `User` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `username` VARCHAR(100) UNIQUE NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `role` INT(1) NOT NULL, -- 0: 学生, 1: 老师, 2: 管理员
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+```
+
+### 5. 插入测试数据
+
+#### 插入课程数据 (`Course` 表)
+
+```sql
+-- 插入课程数据
+INSERT INTO `Course` (`course_name`, `course_code`, `teacher_name`)
+VALUES
+('Java编程基础', 'CS101', '李老师'),
+('数据结构与算法', 'CS102', '王老师'),
+('数据库原理', 'CS103', '赵老师');
+```
+
+#### 插入学生数据 (`Student` 表)
+
+```sql
+-- 插入学生数据
+INSERT INTO `Student` (`name`, `gender`, `birth_date`, `phone`, `address`)
+VALUES
+('张三', '男', '2000-01-01', '13800000001', '北京市海淀区'),
+('李四', '女', '1999-03-15', '13800000002', '上海市浦东新区'),
+('王五', '男', '2000-07-20', '13800000003', '广州市天河区');
+```
+
+#### 插入成绩数据 (`Grade` 表)
+
+```sql
+-- 插入成绩数据
+INSERT INTO `Grade` (`student_id`, `course_id`, `score`)
+VALUES
+(1, 1, 85.5),  -- 张三的成绩
+(1, 2, 78.0),
+(1, 3, 90.0),
+
+(2, 1, 88.0),  -- 李四的成绩
+(2, 2, 92.0),
+(2, 3, 80.5),
+
+(3, 1, 91.5),  -- 王五的成绩
+(3, 2, 84.0),
+(3, 3, 86.0);
+```
+
+#### 插入账号数据（`User`表）
+
+```sql
+-- 插入学生
+INSERT INTO `User` (`name`, `username`, `password`, `role`)
+VALUES 
+('张三', 'student01', 'password123', 0);
+
+-- 插入老师
+INSERT INTO `User` (`name`, `username`, `password`, `role`)
+VALUES 
+('李四', 'teacher01', 'password123', 1);
+
+-- 插入管理员
+INSERT INTO `User` (`name`, `username`, `password`, `role`)
+VALUES 
+('王五', 'admin01', 'password123', 2);
+```
+
   
 

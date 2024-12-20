@@ -5,7 +5,7 @@ import java.sql.*;
 public class DatabaseManager {
 
 	// 数据库连接信息
-	private static final String URL = "jdbc:mysql://localhost:3306/students";
+	private static final String URL = "jdbc:mysql://localhost:3306/student_management";
 	private static final String USER = "root"; // 替换为你的数据库用户名
 	private static final String PASSWORD = "000000"; // 替换为你的数据库密码
 

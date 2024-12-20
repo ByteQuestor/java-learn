@@ -19,13 +19,13 @@ public class NavigationPanel {
         buttons = new ArrayList<>();
         JButton btnQuery = createNavButton("工作桌面", "query");
         JButton btnAdd = createNavButton("新增信息", "add");
-        JButton btnUpdate = createNavButton("课表信息", "update");
-        JButton btnDelete = createNavButton("操作记录", "delete");
+//        JButton btnUpdate = createNavButton("课表信息", "update");
+//        JButton btnDelete = createNavButton("操作记录", "delete");
 
         buttons.add(btnQuery);
         buttons.add(btnAdd);
-        buttons.add(btnUpdate);
-        buttons.add(btnDelete);
+//        buttons.add(btnUpdate);
+//        buttons.add(btnDelete);
 
         for (JButton button : buttons) {
             panel.add(button);

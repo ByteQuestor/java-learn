@@ -10,13 +10,56 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2024-12-17 13:23:12
+Date: 2024-12-20 11:15:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
 CREATE DATABASE students;
 USE students;
+-- ----------------------------
+-- Table structure for course
+-- ----------------------------
+DROP TABLE IF EXISTS `course`;
+CREATE TABLE `course` (
+  `course_id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `course_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `teacher_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`course_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of course
+-- ----------------------------
+INSERT INTO `course` VALUES ('1', 'Java编程基础', '101', '李老师');
+INSERT INTO `course` VALUES ('2', '数据结构与算法', '102', '王老师');
+INSERT INTO `course` VALUES ('3', '数据库原理', '103', '赵老师');
+
+-- ----------------------------
+-- Table structure for grade
+-- ----------------------------
+DROP TABLE IF EXISTS `grade`;
+CREATE TABLE `grade` (
+  `grade_id` int(11) NOT NULL AUTO_INCREMENT,
+  `student_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `score` decimal(5,2) NOT NULL,
+  PRIMARY KEY (`grade_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of grade
+-- ----------------------------
+INSERT INTO `grade` VALUES ('1', '1', '1', '85.50');
+INSERT INTO `grade` VALUES ('2', '1', '2', '78.00');
+INSERT INTO `grade` VALUES ('3', '1', '3', '90.00');
+INSERT INTO `grade` VALUES ('4', '2', '1', '88.00');
+INSERT INTO `grade` VALUES ('5', '2', '2', '92.00');
+INSERT INTO `grade` VALUES ('6', '2', '3', '80.50');
+INSERT INTO `grade` VALUES ('7', '3', '1', '91.50');
+INSERT INTO `grade` VALUES ('8', '3', '2', '84.00');
+INSERT INTO `grade` VALUES ('9', '3', '3', '86.00');
+
 -- ----------------------------
 -- Table structure for students
 -- ----------------------------
@@ -39,3 +82,24 @@ INSERT INTO `students` VALUES ('2', 'wzy', '男', '2004-03-10', '13900000002', '
 INSERT INTO `students` VALUES ('3', '王五', '男', '2001-05-15', '13900000003', '广州市天河区');
 INSERT INTO `students` VALUES ('4', '赵六', '女', '2000-07-20', '13900000004', '深圳市南山区');
 INSERT INTO `students` VALUES ('5', '周七', '男', '1998-08-30', '13900000005', '重庆市渝中区');
+
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` int(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('1', '蔡菁茹', 'stu1', '000000', '0');
+INSERT INTO `user` VALUES ('2', '李四', 'tec', '000000', '1');
+INSERT INTO `user` VALUES ('3', '王子阳', 'admin', '000000', '2');

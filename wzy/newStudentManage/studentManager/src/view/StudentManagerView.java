@@ -17,11 +17,12 @@ public class StudentManagerView {
     private JFrame frame;
     private CardLayout cardLayout;
     private JPanel cardPanel;
+    //封装类
     private NavigationPanel navigationPanel;
     private QueryPanel queryPanel;
     private AddPanel addPanel;
     //private UpdatePanel updatePanel;
-    private DeletePanel deletePanel;
+    //private DeletePanel deletePanel;
 
     public StudentManagerView() {
         initialize();
