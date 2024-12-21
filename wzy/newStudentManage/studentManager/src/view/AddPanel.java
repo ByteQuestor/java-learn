@@ -79,8 +79,8 @@ public class AddPanel {
 		addNameField = createTextFieldPanel(panel, "新增用户账号：");
 
 		// 角色单选框
-		teacherRadioButton = new JRadioButton("1");
-		adminRadioButton = new JRadioButton("2");
+		teacherRadioButton = new JRadioButton("老师");
+		adminRadioButton = new JRadioButton("管理员");
 		ButtonGroup roleGroup = new ButtonGroup();
 		roleGroup.add(teacherRadioButton);
 		roleGroup.add(adminRadioButton);

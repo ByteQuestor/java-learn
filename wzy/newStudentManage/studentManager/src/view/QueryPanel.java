@@ -78,7 +78,7 @@ public class QueryPanel {
 					String userIdStr = allUserTable.getValueAt(selectedRow, 0).toString();
 					deleteUserRow = selectedRow;
 					deleteUserID = Integer.parseInt(userIdStr);
-					System.out.print("deleteID  " + deleteID + "\n");
+					System.out.print("deleteUserID  " + deleteUserID + "\n");
 				}
 			}
 		});
@@ -179,7 +179,7 @@ public class QueryPanel {
 		editPanel.add(editNameField);
 
 		editPanel.add(new JLabel("角色:"));
-		roleComboBox = new JComboBox<>(new String[] { "1", "2" });
+		roleComboBox = new JComboBox<>(new String[] { "老师", "管理员" });
 		editPanel.add(roleComboBox);
 
 		editPanel.add(new JLabel("密码:"));
@@ -319,7 +319,20 @@ public class QueryPanel {
 				return false;
 			}
 		};
-		users.forEach(student -> model.addRow(student));
+		//users.forEach(student -> model.addRow(student));
+		
+		// 遍历用户数据并转换角色值
+	    users.forEach(user -> {
+	        // 获取角色数字（角色是users数组中的第5个元素）
+	        String role = user[4];
+	        if ("1".equals(role)) {
+	            user[4] = "老师";  // 将数字1渲染为“老师”
+	        } else if ("2".equals(role)) {
+	            user[4] = "管理员";  // 将数字2渲染为“管理员”
+	        }
+	        
+	        model.addRow(user);  // 添加到表格模型中
+	    });
 		allUserTable.setModel(model);
 	}
 
@@ -376,7 +389,14 @@ public class QueryPanel {
 			String l_role = (String) roleComboBox.getSelectedItem();
 			String password = editPasswordField.getText();
 			UserController controller = new UserController(this.parentView);
-			controller.updateUser(userId, name, realname, l_role, password);
+			System.out.print("角色讲修改为：" + l_role);
+			if(l_role.equals("老师")) {
+				System.out.print("\n插入1\n");
+				controller.updateUser(userId, name, realname, "1", password);
+			}else if(l_role.equals("管理员")) {
+				System.out.print("\n插入2\n");
+				controller.updateUser(userId, name, realname, "2", password);
+			}
 			updateUserTable();
 		}
 	}
