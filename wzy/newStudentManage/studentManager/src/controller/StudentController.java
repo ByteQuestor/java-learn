@@ -156,6 +156,36 @@ public class StudentController {
 
         return maxStudentId;  // 返回最大学生ID
     }
+    // 根据名字和密码返回用户的其它信息
+    public List<String[]> getStudentByNameAndPassword(String name, String password) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<String[]> studentInfoList = new ArrayList<>();
 
+        try {
+            connection = DatabaseManager.getConnection();
+            String query = "SELECT student_id, gender, birth_date, phone, address FROM students WHERE name =? AND password =?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, password);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String studentId = String.valueOf(resultSet.getInt("student_id"));
+                String gender = resultSet.getString("gender");
+                String birthDate = resultSet.getDate("birth_date").toString();
+                String phone = resultSet.getString("phone");
+                String address = resultSet.getString("address");
+                studentInfoList.add(new String[] { studentId, gender, birthDate, phone, address });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseManager.closeConnection(connection, preparedStatement, resultSet);
+        }
+
+        return studentInfoList;
+    }
 
 }

@@ -24,11 +24,11 @@ public class StudentManagerView {
     private UpdatePanel updatePanel;
     //private DeletePanel deletePanel;
 
-    public StudentManagerView(int role) {
-        initialize(role);
+    public StudentManagerView(int role,String name,String password) {
+        initialize(role,name,password);
     }
 
-    private void initialize(int role) {
+    private void initialize(int role,String name,String password) {
         frame = new JFrame("学生信息管理系统");
         frame.setBounds(100, 100, 800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,8 +36,8 @@ public class StudentManagerView {
 
         // 初始化各个功能面板
         navigationPanel = new NavigationPanel(role);
-        queryPanel = new QueryPanel(this,role);
-        addPanel = new AddPanel(this);
+        queryPanel = new QueryPanel(this,role,name,password);
+        addPanel = new AddPanel(this,role);
         updatePanel = new UpdatePanel();
         //deletePanel = new DeletePanel();
         cardLayout = new CardLayout();
@@ -104,11 +104,17 @@ public class StudentManagerView {
     public void displayCourses(List<String[]> course) {
         queryPanel.displayCourses(course);
     }
+    public void displayUsers(List<String[]> User) {
+        queryPanel.displayUsers(User);
+    }
     
     public void updateStudentTable() {
         queryPanel.updateStudentTable();
     }
     public void updateCourseTable() {
         queryPanel.updateCourseTable();
+    }
+    public void updateUserTable() {
+        queryPanel.updateUserTable();
     }
 }

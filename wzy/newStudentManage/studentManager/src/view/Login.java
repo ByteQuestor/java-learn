@@ -3,15 +3,17 @@ package view;
 import javax.swing.*;
 
 import controller.BindView;
+import controller.StudentController;
 import controller.UserController;
 
 import java.awt.event.*;
+import java.util.List;
 
 public class Login extends JFrame implements ActionListener {
 	private JButton studentLoginButton, teacherLoginButton, cancelButton, adminLoginButton;
 	private JTextField uidField;
 	private JPasswordField pwdField;
-	UserController userController = new UserController();// 验证登录是否成功
+	UserController userController = new UserController(null);// 验证登录是否成功
 
 	public Login() {
 		// 设置窗口基本属性
@@ -89,19 +91,20 @@ public class Login extends JFrame implements ActionListener {
 		String username = uidField.getText();
 		String password = new String(pwdField.getPassword());
 		String sql_role = String.valueOf(role);
+
 		BindView View = new BindView();
 		if (role == 0 && userController.studentLogin(username, password)) {
 			// 学生登录
 			//JOptionPane.showMessageDialog(this, "学生视图未开发");
 			// 封装视图绑定
 			//BindView teacherView = new BindView();
-			View.bind(0);
+			View.bind(0,username,password);
 		} else if (role == 1 && userController.login(username, password, sql_role)) {
 			// 老师登录
 			// 封装视图绑定
 			//BindView teacherView = new BindView();
 			//teacherView.bind(1);
-			View.bind(1);
+			View.bind(1,"I am a teacher","000000");
 		} else if (role == 2 && userController.login(username, password, sql_role)) {
 			// 管理员登录
 			// 封装视图绑定
@@ -109,7 +112,7 @@ public class Login extends JFrame implements ActionListener {
 			// 封装视图绑定
 			//BindView teacherView = new BindView();
 			//teacherView.bind(2);
-			View.bind(2);
+			View.bind(2,"I am a admin","000000");
 		} else {
 			JOptionPane.showMessageDialog(this, "密码错误！");
 		}
