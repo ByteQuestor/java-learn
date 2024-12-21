@@ -50,15 +50,17 @@ INSERT INTO `book` VALUES ('4', '人工智能：一种现代的方法', '80', '3
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
+
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `user_role` enum('admin','reader') COLLATE utf8_unicode_ci NOT NULL,
-  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_login` timestamp NULL DEFAULT NULL,
+  `user_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(50) COLLATE utf8_unicode_ci NOT NULL,
+  `password` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `user_role` ENUM('admin', 'reader') COLLATE utf8_unicode_ci NOT NULL,
+  `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,  -- 自动填充当前时间
+  `last_login` TIMESTAMP NULL DEFAULT NULL,                -- 默认空
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 -- ----------------------------
 -- Records of users

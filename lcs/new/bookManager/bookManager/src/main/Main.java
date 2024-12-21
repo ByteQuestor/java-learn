@@ -1,10 +1,10 @@
 package main;
 
-import view.LibraryLoginFrame;
+import view.FormFactory;
 
 public class Main {
     public static void main(String[] args) {
         // 创建并显示登录窗口
-        new LibraryLoginFrame();
+        new FormFactory();
     }
 }
