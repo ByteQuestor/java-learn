@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
+import model.CurrentTime;
 import model.DatabaseManager;
 import view.Choose;
 import view.select;
@@ -26,7 +27,11 @@ public class UserController {
 			preparedStatement.setString(2, userName);
 			preparedStatement.setString(3, password);
 			preparedStatement.setString(4, user_role);
-			preparedStatement.setString(5, create_time);
+			//获取时间
+			CurrentTime getCurrentTime = new CurrentTime();
+			String currentTime = getCurrentTime.CurrentTime();
+			preparedStatement.setString(5, currentTime);
+			
 			int result = preparedStatement.executeUpdate();
 			if (result > 0) {
 				System.out.println("用户信息添加进去了！");
@@ -42,7 +47,7 @@ public class UserController {
 
 	public int checkLogin(String username, String password, String userRole) {
 		try {
-			// 建立数据库连接（根据实际情况修改URL、用户名、密码）
+			// 封装了数据库链接
 			Connection connection = DatabaseManager.getConnection();
 
 			// 准备SQL查询语句，防止SQL注入
@@ -52,10 +57,29 @@ public class UserController {
 			preparedStatement.setString(1, username);
 			preparedStatement.setString(2, password);
 			preparedStatement.setString(3, userRole);
-
+			//获取时间
+			CurrentTime getCurrentTime = new CurrentTime();
+			String currentTime = getCurrentTime.CurrentTime();
+			
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				JOptionPane.showMessageDialog(null, "登录成功！");
+				
+				//插入最后登录时间
+				String updateSql = "UPDATE users SET last_login =? WHERE username =? AND user_role =?";
+				
+				PreparedStatement updatePreparedStatement = connection.prepareStatement(updateSql);
+                updatePreparedStatement.setString(1, currentTime);
+                updatePreparedStatement.setString(2, username);
+                updatePreparedStatement.setString(3, userRole);
+
+                // 执行更新操作，插入登录时间
+                int rowsAffected = updatePreparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("登录时间插入成功");
+                } else {
+                    System.out.println("登录时间插入失败");
+                }
 				// 关闭资源
 				resultSet.close();
 				preparedStatement.close();

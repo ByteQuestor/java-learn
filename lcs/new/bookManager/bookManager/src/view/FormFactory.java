@@ -154,6 +154,7 @@ public class FormFactory extends JFrame {
             if (buttonText.equals("登录")) {
                 // 登录操作
                 int option = usercon.checkLogin(username, password, userRole);
+                System.out.print(option + "\n");
                 if (option == 1) {
                     // 管理员界面
                     System.out.println("进入管理员面板");
