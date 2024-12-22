@@ -69,8 +69,9 @@ public class NavigationPanel {
 	// 老师角色的按钮
 	private void addTeacherButtons() {
 		JButton btnAdd = createNavButton("新增学生", "add");
-		JButton btnSource = createNavButton("编辑成绩", "add");
+		JButton btnSource = createNavButton("编辑成绩", "update");
 		buttons.add(btnAdd);
+		buttons.add(btnSource);
 	}
 
 	// 管理员角色的按钮
