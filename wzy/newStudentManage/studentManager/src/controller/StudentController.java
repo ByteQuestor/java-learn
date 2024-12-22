@@ -14,7 +14,7 @@ public class StudentController {
         this.view = view;
     }
 
-    // 加载数据库数据
+ // 加载数据库数据
     public void loadStudentData() {
         Connection connection = null;
         Statement statement = null;
@@ -39,6 +39,41 @@ public class StudentController {
             }
 
             view.displayStudents(students);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseManager.closeConnection(connection, statement, resultSet);
+        }
+    }
+    
+    
+    //为管理员渲染学生信息
+    
+ // 加载数据库数据
+    public void loadUpStudentData() {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        List<String[]> students = new ArrayList<>();
+
+        try {
+            connection = DatabaseManager.getConnection();
+            String query = "SELECT * FROM students";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                String studentId = String.valueOf(resultSet.getInt("student_id"));
+                String name = resultSet.getString("name");
+                String gender = resultSet.getString("gender");
+                String birthDate = resultSet.getDate("birth_date").toString();
+                String phone = resultSet.getString("phone");
+                String address = resultSet.getString("address");
+                String password = resultSet.getString("password");
+                students.add(new String[] { studentId, name, gender, birthDate, phone, address,password });
+            }
+
+            view.displayUpStudentTable(students);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

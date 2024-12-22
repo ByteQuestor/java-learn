@@ -44,6 +44,31 @@ public class CourseController {
         }
     }
 
+    public double showCurseSource(int student, int course) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DatabaseManager.getConnection();
+            String searchCourse = "SELECT score FROM grade WHERE student_id =? AND course_id =?";
+            preparedStatement = connection.prepareStatement(searchCourse);
+            preparedStatement.setInt(1, student);
+            preparedStatement.setInt(2, course);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                double doubleValue = resultSet.getDouble("score");
+                return doubleValue;
+            }
+            return -1;  // 如果没有查询到成绩，返回-1
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;  // 出现异常也返回-1
+        } finally {
+            DatabaseManager.closeConnection(connection, preparedStatement, resultSet);
+        }
+    }
 //    // 添加学生到数据库
 //    public void addStudent(String studentId, String name, String gender, String birthDate, String phone, String address) {
 //        Connection connection = null;

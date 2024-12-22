@@ -19,19 +19,28 @@ public class QueryPanel {
 
 	private JPanel panel;
 	private JTable allStudentTable, allCourseTable, allUserTable;
-	private JTextField editStudentIdField, editNameField, editRealNameField, dobField, editPhoneField, editAddressField,
-			editPasswordField;
+	private JTextField 	editStudentIdField, 
+						editSourceField,
+						editNameField, 
+						editRealNameField, 
+						dobField, 
+						editPhoneField, 
+						editAddressField,
+						editPasswordField;
 	private JComboBox<String> genderComboBox, roleComboBox;
 	private JButton submitButton, deleteButton, editPasswordButton;
 	private int deleteID = -1, deleteRow = -1, deleteUserRow = -1, deleteUserID = -1;
 	private StudentManagerView parentView;
-
+	public int tableStudentId,tableCourseId;
+	public String editStudentName,editStudentPassword;
 	public QueryPanel(StudentManagerView parentView, int role, String name, String password) {
 		this.parentView = parentView;
 		initialize(role, name, password);
 	}
 
 	private void initialize(int role, String name, String password) {
+		this.editStudentName = name;
+		this.editStudentPassword = password;
 		panel = new JPanel(new BorderLayout());
 		allStudentTable = new JTable();
 		allCourseTable = new JTable();// 渲染课程表
@@ -82,20 +91,63 @@ public class QueryPanel {
 				}
 			}
 		});
+		allCourseTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// 当学生点击表格行时，填充信息到修改表单
+				System.out.print("我是学生的课程表\n");
+				int selectedRow = allCourseTable.getSelectedRow();
+				System.out.print("selectedRow: " + selectedRow + "\n");
+				System.out.print("selectedId: " + allCourseTable.getValueAt(selectedRow, 0).toString() + "\n");
+				if (selectedRow != -1) {
+					//editStudentIdField.setText(allCourseTable.getValueAt(selectedRow, 0).toString());
+					//editRealNameField.setText(allCourseTable.getValueAt(selectedRow, 1).toString());
+					//editNameField.setText(allCourseTable.getValueAt(selectedRow, 2).toString());
+					String studentId = editStudentIdField.getText();
+					CourseController courseController = new CourseController(null);
+					double source = courseController.showCurseSource(Integer.parseInt(studentId), Integer.parseInt(allCourseTable.getValueAt(selectedRow, 0).toString()));
+					editSourceField.setText(String.valueOf(source));
+					//生日框爆改课程名称框
+					dobField.setText(allCourseTable.getValueAt(selectedRow, 1).toString());
+					//地址框爆改任课老师
+					editAddressField.setText(allCourseTable.getValueAt(selectedRow, 3).toString());
+					//电话框爆改课程代码
+					editPhoneField.setText(allCourseTable.getValueAt(selectedRow, 2).toString());
+					System.out.print("选择的: " + allCourseTable.getValueAt(selectedRow, 0).toString() + "\n");
+					System.out.print("选择的: " + allCourseTable.getValueAt(selectedRow, 1).toString() + "\n");
+					System.out.print("选择的: " + allCourseTable.getValueAt(selectedRow, 2).toString() + "\n");
+					System.out.print("选择的: " + allCourseTable.getValueAt(selectedRow, 3).toString() + "\n");
+					// 获取要删除的学生的id
+					String userIdStr = allCourseTable.getValueAt(selectedRow, 0).toString();
+					deleteUserRow = selectedRow;
+					deleteUserID = Integer.parseInt(userIdStr);
+					System.out.print("deleteUserID  " + deleteUserID + "\n");
+				}
+			}
+		});
 		if (role == 0) {
 			panel.add(new JScrollPane(allCourseTable), BorderLayout.CENTER);// 显示课程表
 			// 为了给学生视图渲染信息
 			StudentController studentController = new StudentController(null);
 			List<String[]> studentInfo = studentController.getStudentByNameAndPassword(name, password);
+			List<String[]> courceInfo = studentController.getStudentByNameAndPassword(name, password);
+			
 			System.out.println("查询的学生信息：");
 			System.out.println(studentInfo.get(0)[0]);
 			System.out.println(studentInfo.get(0)[1]);
 			System.out.println(studentInfo.get(0)[2]);
 			System.out.println(studentInfo.get(0)[3]);
 			System.out.println(studentInfo.get(0)[4]);
-
-			JPanel editPanel = createSearchPanel(studentInfo.get(0)[0], name, password, studentInfo.get(0)[1],
-					studentInfo.get(0)[2], studentInfo.get(0)[3], studentInfo.get(0)[4]);
+			//this.tableStudentId = Integer.parseInt(studentInfo.get(0)[0]);
+			
+			JPanel editPanel = createSearchPanel(
+					studentInfo.get(0)[0],
+					this.editStudentName, 
+					this.editStudentPassword, 
+					"95.2",
+					studentInfo.get(0)[2], 
+					studentInfo.get(0)[3], 
+					studentInfo.get(0)[4]	);
 			panel.add(editPanel, BorderLayout.SOUTH);
 		} else if (role == 1) {
 			panel.add(new JScrollPane(allStudentTable), BorderLayout.CENTER);
@@ -204,7 +256,13 @@ public class QueryPanel {
 	// 创建查询面板
 
 	// 添加查询按钮
-	private JPanel createSearchPanel(String id, String name, String password, String gender, String brith, String phone,
+	private JPanel createSearchPanel(
+			String id, 
+			String name, 
+			String password, 
+			String gender, 
+			String brith, 
+			String phone,
 			String address) {
 		JPanel searchPanel = new JPanel(new GridLayout(4, 2, 5, 5));
 
@@ -218,28 +276,37 @@ public class QueryPanel {
 		searchPanel.add(new JLabel("姓名:"));
 		editNameField = new JTextField();
 		editNameField.setText(name);
+		editNameField.setEditable(false);
 		searchPanel.add(editNameField);
-
-		searchPanel.add(new JLabel("性别:"));
-		genderComboBox = new JComboBox<>(new String[] { "男", "女" });
-		editNameField.setText(gender);
-		searchPanel.add(genderComboBox);
-
-		searchPanel.add(new JLabel("出生日期:"));
+		
+		//生日框爆改课程名称框
+		searchPanel.add(new JLabel("课程名称:"));
 		dobField = new JTextField();
 		dobField.setText(brith);
 		dobField.setEditable(false);
 		searchPanel.add(dobField);
-
-		searchPanel.add(new JLabel("电话:"));
+		//电话框爆改课程代码
+		searchPanel.add(new JLabel("课程代码:"));
 		editPhoneField = new JTextField();
 		editPhoneField.setText(phone);
+		editPhoneField.setEditable(false);
 		searchPanel.add(editPhoneField);
 
-		searchPanel.add(new JLabel("地址:"));
+		//地址框爆改任课老师
+		searchPanel.add(new JLabel("任课老师:"));
 		editAddressField = new JTextField();
 		editAddressField.setText(address);
+		editAddressField.setEditable(false);
 		searchPanel.add(editAddressField);
+		
+		searchPanel.add(new JLabel("成绩:"));
+		editSourceField = new JTextField();
+		//genderComboBox = new JComboBox<>(new String[] { "男", "女" });
+		editSourceField.setText("99999999");
+		editSourceField.setEditable(false);
+		searchPanel.add(editSourceField);	
+
+		
 
 		searchPanel.add(new JLabel("密码:"));
 		editPasswordField = new JTextField();

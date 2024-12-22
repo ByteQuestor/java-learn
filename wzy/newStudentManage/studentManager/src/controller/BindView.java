@@ -20,10 +20,10 @@ public class BindView {
 			System.out.print("进入管理员视角");
 			// 创建控制器，并关联视图
 			UserController userController = new UserController(view);
-			// 加载学生数据并显示
+			// 加载用户数据并显示
 			userController.loadUserData();
 		}
-
+		
 		// 显示界面
 		view.getFrame().setVisible(true);
 	}

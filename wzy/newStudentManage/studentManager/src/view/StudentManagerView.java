@@ -38,7 +38,7 @@ public class StudentManagerView {
         navigationPanel = new NavigationPanel(role);
         queryPanel = new QueryPanel(this,role,name,password);
         addPanel = new AddPanel(this,role);
-        updatePanel = new UpdatePanel();
+        updatePanel = new UpdatePanel(this,role,name,password);
         //deletePanel = new DeletePanel();
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
@@ -68,7 +68,7 @@ public class StudentManagerView {
         }else if(role==2) {
             cardPanel.add(queryPanel.getPanel(), "query");
             cardPanel.add(addPanel.getPanel(), "add");
-            cardPanel.add(updatePanel.getPanel(), "update");
+            cardPanel.add(updatePanel.getPanel(), "update"); // 确保这里添加了 updatePanel
             //cardPanel.add(deletePanel.getPanel(), "delete");
         	JLabel statusLabel = new JLabel("当前身份：管理员", JLabel.CENTER);
             statusLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -106,6 +106,11 @@ public class StudentManagerView {
     }
     public void displayUsers(List<String[]> User) {
         queryPanel.displayUsers(User);
+        //queryPanel.updateStudentTable();
+    }
+    //管理员面板的学生信息窗口
+    public void displayUpStudentTable(List<String[]> students) {
+    	updatePanel.displayStudents(students);
     }
     
     public void updateStudentTable() {

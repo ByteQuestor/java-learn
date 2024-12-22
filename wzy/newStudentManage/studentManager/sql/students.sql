@@ -61,7 +61,15 @@ INSERT INTO `grade` VALUES ('6', '2', '3', '80.50');
 INSERT INTO `grade` VALUES ('7', '3', '1', '91.50');
 INSERT INTO `grade` VALUES ('8', '3', '2', '84.00');
 INSERT INTO `grade` VALUES ('9', '3', '3', '86.00');
-
+INSERT INTO `grade` VALUES ('10', '4', '1', '76.50');
+INSERT INTO `grade` VALUES ('11', '4', '2', '83.00');
+INSERT INTO `grade` VALUES ('12', '4', '3', '88.50');
+INSERT INTO `grade` VALUES ('13', '5', '1', '81.00');
+INSERT INTO `grade` VALUES ('14', '5', '2', '79.00');
+INSERT INTO `grade` VALUES ('15', '5', '3', '92.50');
+INSERT INTO `grade` VALUES ('16', '6', '1', '89.00');
+INSERT INTO `grade` VALUES ('17', '6', '2', '84.00');
+INSERT INTO `grade` VALUES ('18', '6', '3', '87.00');
 -- ----------------------------
 -- Table structure for students
 -- ----------------------------

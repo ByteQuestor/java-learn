@@ -68,14 +68,15 @@ public class NavigationPanel {
     }
 	// 老师角色的按钮
 	private void addTeacherButtons() {
-		JButton btnAdd = createNavButton("新增信息", "add");
+		JButton btnAdd = createNavButton("新增学生", "add");
+		JButton btnSource = createNavButton("编辑成绩", "add");
 		buttons.add(btnAdd);
 	}
 
 	// 管理员角色的按钮
 	private void addAdminButtons() {
-		JButton btnAdd = createNavButton("新增信息", "add");
-		JButton btnUpdate = createNavButton("课表信息", "update");
+		JButton btnAdd = createNavButton("新增用户", "add");
+		JButton btnUpdate = createNavButton("学生信息", "update");
 		JButton btnDelete = createNavButton("操作记录", "delete");
 
 		buttons.add(btnAdd);
